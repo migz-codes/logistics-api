@@ -2,6 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: String!
+  name: String!
+  email: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Warehouse {
   id: String!
   accountable_id: String!
@@ -20,20 +33,22 @@ type Warehouse {
   updated_at: DateTime!
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
-
 type Query {
   warehouses: [Warehouse!]
   warehouse(id: String!): Warehouse
 }
 
 type Mutation {
+  createUser(input: CreateUserInput!): User!
   createWarehouse(input: CreateWarehouseInput!): Warehouse
   updateWarehouse(input: UpdateWarehouseInput!): Warehouse
   removeWarehouse(id: String!): Warehouse
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
 }
 
 input CreateWarehouseInput {

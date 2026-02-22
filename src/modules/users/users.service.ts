@@ -10,8 +10,12 @@ export class UserService {
   async create(input: CreateUserInput) {
     const hashedPassword = await bcrypt.hash(input.password, 10)
 
-    return this.prismaService.user.create({
+    const user = await this.prismaService.user.create({
       data: { name: input.name, email: input.email, password: hashedPassword }
     })
+
+    delete user.password
+
+    return user
   }
 }

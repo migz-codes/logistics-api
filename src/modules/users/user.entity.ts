@@ -12,7 +12,6 @@ export class User implements PrismaUser {
   @Field(() => String)
   email: string
 
-  @Field(() => String)
   password: string
 
   @Field(() => Date)
