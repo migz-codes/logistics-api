@@ -1,8 +1,14 @@
-import { Field, InputType, OmitType } from '@nestjs/graphql'
-import { Warehouse } from '../entities/warehouse.entity'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { Warehouse as PrismaWarehouse } from 'generated/prisma/client'
 
-@InputType()
-export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at', 'updated_at']) {
+@ObjectType()
+export class Warehouse implements PrismaWarehouse {
+  @Field(() => String)
+  id: string
+
+  @Field(() => String)
+  accountable_id: string
+
   @Field(() => String)
   title: string
 
@@ -36,6 +42,9 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
   @Field(() => String)
   country: string
 
-  @Field(() => String)
-  accountable_id: string
+  @Field(() => Date)
+  created_at: Date
+
+  @Field(() => Date)
+  updated_at: Date
 }

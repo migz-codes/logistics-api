@@ -5,16 +5,20 @@ import { AppService } from './app.service'
 import { GraphqlModule } from './lib/graphql/graphql.module'
 import { PrismaModule } from './lib/prisma/prisma.module'
 import { PrismaService } from './lib/prisma/prisma.service'
-import { WarehousesModule } from './warehouses/warehouses.module'
+import { UserModule } from './modules/users/users.module'
+import { UserResolver } from './modules/users/users.resolver'
+import { UserService } from './modules/users/users.service'
+import { WarehousesModule } from './modules/warehouses/warehouses.module'
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    UserModule,
     PrismaModule,
     GraphqlModule,
-    WarehousesModule,
-    ConfigModule.forRoot({ isGlobal: true })
+    WarehousesModule
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService]
+  providers: [AppService, PrismaService, UserResolver, UserService]
 })
 export class AppModule {}

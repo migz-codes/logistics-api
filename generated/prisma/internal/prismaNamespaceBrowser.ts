@@ -73,7 +73,11 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  updated_at: 'updated_at',
+  created_at: 'created_at'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -81,7 +85,6 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const WarehouseScalarFieldEnum = {
   id: 'id',
-  accountable_id: 'accountable_id',
   title: 'title',
   description: 'description',
   city: 'city',
@@ -94,7 +97,8 @@ export const WarehouseScalarFieldEnum = {
   zip_code: 'zip_code',
   country: 'country',
   updated_at: 'updated_at',
-  created_at: 'created_at'
+  created_at: 'created_at',
+  accountable_id: 'accountable_id'
 } as const
 
 export type WarehouseScalarFieldEnum = (typeof WarehouseScalarFieldEnum)[keyof typeof WarehouseScalarFieldEnum]

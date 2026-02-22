@@ -26,7 +26,6 @@ export type AggregateWarehouse = {
 
 export type WarehouseMinAggregateOutputType = {
   id: string | null
-  accountable_id: string | null
   title: string | null
   description: string | null
   city: string | null
@@ -40,11 +39,11 @@ export type WarehouseMinAggregateOutputType = {
   country: string | null
   updated_at: Date | null
   created_at: Date | null
+  accountable_id: string | null
 }
 
 export type WarehouseMaxAggregateOutputType = {
   id: string | null
-  accountable_id: string | null
   title: string | null
   description: string | null
   city: string | null
@@ -58,11 +57,11 @@ export type WarehouseMaxAggregateOutputType = {
   country: string | null
   updated_at: Date | null
   created_at: Date | null
+  accountable_id: string | null
 }
 
 export type WarehouseCountAggregateOutputType = {
   id: number
-  accountable_id: number
   title: number
   description: number
   city: number
@@ -76,13 +75,13 @@ export type WarehouseCountAggregateOutputType = {
   country: number
   updated_at: number
   created_at: number
+  accountable_id: number
   _all: number
 }
 
 
 export type WarehouseMinAggregateInputType = {
   id?: true
-  accountable_id?: true
   title?: true
   description?: true
   city?: true
@@ -96,11 +95,11 @@ export type WarehouseMinAggregateInputType = {
   country?: true
   updated_at?: true
   created_at?: true
+  accountable_id?: true
 }
 
 export type WarehouseMaxAggregateInputType = {
   id?: true
-  accountable_id?: true
   title?: true
   description?: true
   city?: true
@@ -114,11 +113,11 @@ export type WarehouseMaxAggregateInputType = {
   country?: true
   updated_at?: true
   created_at?: true
+  accountable_id?: true
 }
 
 export type WarehouseCountAggregateInputType = {
   id?: true
-  accountable_id?: true
   title?: true
   description?: true
   city?: true
@@ -132,6 +131,7 @@ export type WarehouseCountAggregateInputType = {
   country?: true
   updated_at?: true
   created_at?: true
+  accountable_id?: true
   _all?: true
 }
 
@@ -209,7 +209,6 @@ export type WarehouseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 
 export type WarehouseGroupByOutputType = {
   id: string
-  accountable_id: string
   title: string
   description: string
   city: string
@@ -223,6 +222,7 @@ export type WarehouseGroupByOutputType = {
   country: string
   updated_at: Date
   created_at: Date
+  accountable_id: string
   _count: WarehouseCountAggregateOutputType | null
   _min: WarehouseMinAggregateOutputType | null
   _max: WarehouseMaxAggregateOutputType | null
@@ -248,7 +248,6 @@ export type WarehouseWhereInput = {
   OR?: Prisma.WarehouseWhereInput[]
   NOT?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
   id?: Prisma.StringFilter<"Warehouse"> | string
-  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -262,12 +261,12 @@ export type WarehouseWhereInput = {
   country?: Prisma.StringFilter<"Warehouse"> | string
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   accountable?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type WarehouseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  accountable_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -281,6 +280,7 @@ export type WarehouseOrderByWithRelationInput = {
   country?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  accountable_id?: Prisma.SortOrder
   accountable?: Prisma.UserOrderByWithRelationInput
 }
 
@@ -289,7 +289,6 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
   OR?: Prisma.WarehouseWhereInput[]
   NOT?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
-  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -303,12 +302,12 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
   country?: Prisma.StringFilter<"Warehouse"> | string
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   accountable?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type WarehouseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  accountable_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -322,6 +321,7 @@ export type WarehouseOrderByWithAggregationInput = {
   country?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  accountable_id?: Prisma.SortOrder
   _count?: Prisma.WarehouseCountOrderByAggregateInput
   _max?: Prisma.WarehouseMaxOrderByAggregateInput
   _min?: Prisma.WarehouseMinOrderByAggregateInput
@@ -332,7 +332,6 @@ export type WarehouseScalarWhereWithAggregatesInput = {
   OR?: Prisma.WarehouseScalarWhereWithAggregatesInput[]
   NOT?: Prisma.WarehouseScalarWhereWithAggregatesInput | Prisma.WarehouseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  accountable_id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   title?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   description?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   city?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
@@ -346,6 +345,7 @@ export type WarehouseScalarWhereWithAggregatesInput = {
   country?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+  accountable_id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
 }
 
 export type WarehouseCreateInput = {
@@ -368,7 +368,6 @@ export type WarehouseCreateInput = {
 
 export type WarehouseUncheckedCreateInput = {
   id?: string
-  accountable_id: string
   title: string
   description: string
   city: string
@@ -382,6 +381,7 @@ export type WarehouseUncheckedCreateInput = {
   country: string
   updated_at?: Date | string
   created_at?: Date | string
+  accountable_id: string
 }
 
 export type WarehouseUpdateInput = {
@@ -404,7 +404,6 @@ export type WarehouseUpdateInput = {
 
 export type WarehouseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -418,11 +417,11 @@ export type WarehouseUncheckedUpdateInput = {
   country?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WarehouseCreateManyInput = {
   id?: string
-  accountable_id: string
   title: string
   description: string
   city: string
@@ -436,6 +435,7 @@ export type WarehouseCreateManyInput = {
   country: string
   updated_at?: Date | string
   created_at?: Date | string
+  accountable_id: string
 }
 
 export type WarehouseUpdateManyMutationInput = {
@@ -457,7 +457,6 @@ export type WarehouseUpdateManyMutationInput = {
 
 export type WarehouseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -471,6 +470,7 @@ export type WarehouseUncheckedUpdateManyInput = {
   country?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WarehouseListRelationFilter = {
@@ -485,7 +485,6 @@ export type WarehouseOrderByRelationAggregateInput = {
 
 export type WarehouseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  accountable_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -499,11 +498,11 @@ export type WarehouseCountOrderByAggregateInput = {
   country?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  accountable_id?: Prisma.SortOrder
 }
 
 export type WarehouseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  accountable_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -517,11 +516,11 @@ export type WarehouseMaxOrderByAggregateInput = {
   country?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  accountable_id?: Prisma.SortOrder
 }
 
 export type WarehouseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  accountable_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
@@ -535,6 +534,7 @@ export type WarehouseMinOrderByAggregateInput = {
   country?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  accountable_id?: Prisma.SortOrder
 }
 
 export type WarehouseCreateNestedManyWithoutAccountableInput = {
@@ -577,10 +577,6 @@ export type WarehouseUncheckedUpdateManyWithoutAccountableNestedInput = {
   update?: Prisma.WarehouseUpdateWithWhereUniqueWithoutAccountableInput | Prisma.WarehouseUpdateWithWhereUniqueWithoutAccountableInput[]
   updateMany?: Prisma.WarehouseUpdateManyWithWhereWithoutAccountableInput | Prisma.WarehouseUpdateManyWithWhereWithoutAccountableInput[]
   deleteMany?: Prisma.WarehouseScalarWhereInput | Prisma.WarehouseScalarWhereInput[]
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type WarehouseCreateWithoutAccountableInput = {
@@ -648,7 +644,6 @@ export type WarehouseScalarWhereInput = {
   OR?: Prisma.WarehouseScalarWhereInput[]
   NOT?: Prisma.WarehouseScalarWhereInput | Prisma.WarehouseScalarWhereInput[]
   id?: Prisma.StringFilter<"Warehouse"> | string
-  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -662,6 +657,7 @@ export type WarehouseScalarWhereInput = {
   country?: Prisma.StringFilter<"Warehouse"> | string
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  accountable_id?: Prisma.StringFilter<"Warehouse"> | string
 }
 
 export type WarehouseCreateManyAccountableInput = {
@@ -736,7 +732,6 @@ export type WarehouseUncheckedUpdateManyWithoutAccountableInput = {
 
 export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  accountable_id?: boolean
   title?: boolean
   description?: boolean
   city?: boolean
@@ -750,12 +745,12 @@ export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   country?: boolean
   updated_at?: boolean
   created_at?: boolean
+  accountable_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["warehouse"]>
 
 export type WarehouseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  accountable_id?: boolean
   title?: boolean
   description?: boolean
   city?: boolean
@@ -769,12 +764,12 @@ export type WarehouseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   country?: boolean
   updated_at?: boolean
   created_at?: boolean
+  accountable_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["warehouse"]>
 
 export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  accountable_id?: boolean
   title?: boolean
   description?: boolean
   city?: boolean
@@ -788,12 +783,12 @@ export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   country?: boolean
   updated_at?: boolean
   created_at?: boolean
+  accountable_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["warehouse"]>
 
 export type WarehouseSelectScalar = {
   id?: boolean
-  accountable_id?: boolean
   title?: boolean
   description?: boolean
   city?: boolean
@@ -807,9 +802,10 @@ export type WarehouseSelectScalar = {
   country?: boolean
   updated_at?: boolean
   created_at?: boolean
+  accountable_id?: boolean
 }
 
-export type WarehouseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "accountable_id" | "title" | "description" | "city" | "state" | "category" | "area" | "status" | "price" | "address" | "zip_code" | "country" | "updated_at" | "created_at", ExtArgs["result"]["warehouse"]>
+export type WarehouseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "city" | "state" | "category" | "area" | "status" | "price" | "address" | "zip_code" | "country" | "updated_at" | "created_at" | "accountable_id", ExtArgs["result"]["warehouse"]>
 export type WarehouseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -827,7 +823,6 @@ export type $WarehousePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    accountable_id: string
     title: string
     description: string
     city: string
@@ -841,6 +836,7 @@ export type $WarehousePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     country: string
     updated_at: Date
     created_at: Date
+    accountable_id: string
   }, ExtArgs["result"]["warehouse"]>
   composites: {}
 }
@@ -1266,7 +1262,6 @@ export interface Prisma__WarehouseClient<T, Null = never, ExtArgs extends runtim
  */
 export interface WarehouseFieldRefs {
   readonly id: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly accountable_id: Prisma.FieldRef<"Warehouse", 'String'>
   readonly title: Prisma.FieldRef<"Warehouse", 'String'>
   readonly description: Prisma.FieldRef<"Warehouse", 'String'>
   readonly city: Prisma.FieldRef<"Warehouse", 'String'>
@@ -1280,6 +1275,7 @@ export interface WarehouseFieldRefs {
   readonly country: Prisma.FieldRef<"Warehouse", 'String'>
   readonly updated_at: Prisma.FieldRef<"Warehouse", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"Warehouse", 'DateTime'>
+  readonly accountable_id: Prisma.FieldRef<"Warehouse", 'String'>
 }
     
 
