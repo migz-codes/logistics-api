@@ -1,4 +1,4 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { CreateWarehouseInput } from './dto/create-warehouse.input'
 import { UpdateWarehouseInput } from './dto/update-warehouse.input'
 import { Warehouse } from './entities/warehouse.entity'
@@ -19,7 +19,7 @@ export class WarehousesResolver {
   }
 
   @Query(() => Warehouse, { name: 'warehouse', nullable: true })
-  async findOne(@Args('id', { type: () => Int }) id: number) {
+  async findOne(@Args('id', { type: () => String }) id: string) {
     return this.warehousesService.findOne(id)
   }
 
@@ -29,7 +29,7 @@ export class WarehousesResolver {
   }
 
   @Mutation(() => Warehouse, { nullable: true })
-  async removeWarehouse(@Args('id', { type: () => Int }) id: number) {
+  async removeWarehouse(@Args('id', { type: () => String }) id: string) {
     return this.warehousesService.remove(id)
   }
 }

@@ -4,5 +4,5 @@ import { Warehouse } from '../entities/warehouse.entity'
 @InputType()
 export class CreateWarehouseInput extends OmitType(Warehouse, ['id']) {
   @Field(() => String)
-  name: string
+  title: string
 }

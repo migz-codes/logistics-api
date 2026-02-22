@@ -9,7 +9,7 @@ export class WarehousesService {
 
   async create(input: CreateWarehouseInput) {
     const warehouse = await this.prismaService.warehouse.create({
-      data: { name: input.name }
+      data: { title: input.title }
     })
 
     return warehouse
@@ -21,7 +21,7 @@ export class WarehousesService {
     return warehouses
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const warehouse = await this.prismaService.warehouse.findUnique({
       where: { id }
     })
@@ -32,13 +32,13 @@ export class WarehousesService {
   async update(input: UpdateWarehouseInput) {
     const warehouse = await this.prismaService.warehouse.update({
       where: { id: input.id },
-      data: { name: input.name }
+      data: { title: input.title }
     })
 
     return warehouse
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const warehouse = await this.prismaService.warehouse.delete({
       where: { id }
     })
