@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
+import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { CreateUserInput } from './dtos/create-user'
 
 @Injectable()
@@ -15,6 +16,14 @@ export class UserService {
     })
 
     delete user.password
+
+    return user
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.prismaService.user.findUnique({ where: { email } })
+
+    if (!user) return throwGraphQLError('User not found', 'USER_NOT_FOUND')
 
     return user
   }
