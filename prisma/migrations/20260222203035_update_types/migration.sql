@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Warehouse" ALTER COLUMN "area" SET DATA TYPE TEXT,
+ALTER COLUMN "price" SET DATA TYPE TEXT;

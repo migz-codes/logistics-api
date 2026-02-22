@@ -81,7 +81,20 @@ export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof User
 
 export const WarehouseScalarFieldEnum = {
   id: 'id',
-  title: 'title'
+  accountable_id: 'accountable_id',
+  title: 'title',
+  description: 'description',
+  city: 'city',
+  state: 'state',
+  category: 'category',
+  area: 'area',
+  status: 'status',
+  price: 'price',
+  address: 'address',
+  zip_code: 'zip_code',
+  country: 'country',
+  updated_at: 'updated_at',
+  created_at: 'created_at'
 } as const
 
 export type WarehouseScalarFieldEnum = (typeof WarehouseScalarFieldEnum)[keyof typeof WarehouseScalarFieldEnum]

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { PrismaService } from '../prisma/prisma.service'
+import { PrismaService } from '../lib/prisma/prisma.service'
 import { CreateWarehouseInput } from './dto/create-warehouse.input'
 import { UpdateWarehouseInput } from './dto/update-warehouse.input'
 
@@ -9,7 +9,20 @@ export class WarehousesService {
 
   async create(input: CreateWarehouseInput) {
     const warehouse = await this.prismaService.warehouse.create({
-      data: { title: input.title }
+      data: {
+        city: input.city,
+        area: input.area,
+        price: input.price,
+        title: input.title,
+        state: input.state,
+        status: input.status,
+        country: input.country,
+        address: input.address,
+        zip_code: input.zip_code,
+        category: input.category,
+        description: input.description,
+        accountable_id: input.accountable_id
+      }
     })
 
     return warehouse
