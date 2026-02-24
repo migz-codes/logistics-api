@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
-import { CreateUserInput } from './dtos/create-user'
+import { CreateUserInput } from './dtos'
 
 @Injectable()
 export class UserService {

@@ -1,5 +1,5 @@
-import { Field, InputType, OmitType } from '@nestjs/graphql'
-import { Warehouse } from '../warehouse.entity'
+import { Field, InputType, OmitType, PartialType } from '@nestjs/graphql'
+import { Warehouse } from './warehouse.entity'
 
 @InputType()
 export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at', 'updated_at']) {
@@ -38,4 +38,10 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
 
   @Field(() => String)
   accountable_id: string
+}
+
+@InputType()
+export class UpdateWarehouseInput extends PartialType(Warehouse) {
+  @Field(() => String)
+  id: string
 }

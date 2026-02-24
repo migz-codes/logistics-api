@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
-import { CreateWarehouseInput } from './dtos/create-warehouse.input'
+import { CreateWarehouseInput } from './dtos/dtos'
 import { UpdateWarehouseInput } from './dtos/update-warehouse.input'
 import { Warehouse } from './warehouse.entity'
 import { WarehousesService } from './warehouses.service'

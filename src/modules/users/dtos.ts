@@ -1,5 +1,5 @@
 import { Field, InputType, OmitType } from '@nestjs/graphql'
-import { User } from '../user.entity'
+import { User } from './user.entity'
 
 @InputType()
 export class CreateUserInput extends OmitType(User, ['id', 'created_at', 'updated_at']) {

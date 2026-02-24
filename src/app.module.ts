@@ -9,7 +9,6 @@ import { UserModule } from './modules/users/users.module'
 import { UserResolver } from './modules/users/users.resolver'
 import { UserService } from './modules/users/users.service'
 import { WarehousesModule } from './modules/warehouses/warehouses.module'
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,8 +16,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     PrismaModule,
     GraphqlModule,
-    WarehousesModule,
-    AuthModule
+    WarehousesModule
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService, UserResolver, UserService]
