@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
-import { CreateWarehouseInput } from './dtos/dtos'
-import { UpdateWarehouseInput } from './dtos/update-warehouse.input'
+import { CreateWarehouseInput, UpdateWarehouseInput } from './dtos'
 
 @Injectable()
 export class WarehousesService {

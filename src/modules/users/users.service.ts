@@ -23,7 +23,7 @@ export class UserService {
   async findByEmail(email: string) {
     const user = await this.prismaService.user.findUnique({ where: { email } })
 
-    if (!user) return throwGraphQLError('User not found', 'USER_NOT_FOUND')
+    if (!user) return throwGraphQLError({ message: 'User not found', code: 'USER_NOT_FOUND' })
 
     return user
   }

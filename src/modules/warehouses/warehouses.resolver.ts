@@ -1,7 +1,9 @@
+import { Request, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
-import { CreateWarehouseInput } from './dtos/dtos'
-import { UpdateWarehouseInput } from './dtos/update-warehouse.input'
+import { AuthGuard } from '../auth/auth.guard'
+import { IAuthenticatedRequest } from '../auth/dtos'
+import { CreateWarehouseInput, UpdateWarehouseInput } from './dtos'
 import { Warehouse } from './warehouse.entity'
 import { WarehousesService } from './warehouses.service'
 
@@ -9,12 +11,22 @@ import { WarehousesService } from './warehouses.service'
 export class WarehousesResolver {
   constructor(private readonly warehousesService: WarehousesService) {}
 
+  @UseGuards(AuthGuard)
   @Mutation(() => Warehouse, { nullable: true })
-  async createWarehouse(@Args('input') input: CreateWarehouseInput) {
+  async createWarehouse(
+    @Args('input') input: CreateWarehouseInput,
+    @Request() req: IAuthenticatedRequest
+  ) {
+    const userId = req.user.id
+
     try {
-      return await this.warehousesService.create(input)
+      return await this.warehousesService.create({ ...input, accountable_id: userId })
     } catch (error) {
-      throwGraphQLError('Failed to create warehouse', 'WAREHOUSE_CREATE_FAILED', error)
+      throwGraphQLError({
+        error,
+        code: 'WAREHOUSE_CREATE_FAILED',
+        message: 'Failed to create warehouse'
+      })
     }
   }
 
@@ -23,7 +35,11 @@ export class WarehousesResolver {
     try {
       return await this.warehousesService.findAll()
     } catch (error) {
-      throwGraphQLError('Failed to fetch warehouses', 'WAREHOUSES_FETCH_FAILED', error)
+      throwGraphQLError({
+        message: 'Failed to fetch warehouses',
+        code: 'WAREHOUSES_FETCH_FAILED',
+        error
+      })
     }
   }
 
@@ -32,8 +48,10 @@ export class WarehousesResolver {
     try {
       return await this.warehousesService.findOne(id)
     } catch (error) {
-      throwGraphQLError('Failed to fetch warehouse', 'WAREHOUSE_FETCH_FAILED', error, {
-        warehouseId: id
+      throwGraphQLError({
+        message: 'Failed to fetch warehouse',
+        code: 'WAREHOUSE_FETCH_FAILED',
+        error
       })
     }
   }
@@ -43,8 +61,10 @@ export class WarehousesResolver {
     try {
       return await this.warehousesService.update(input)
     } catch (error) {
-      throwGraphQLError('Failed to update warehouse', 'WAREHOUSE_UPDATE_FAILED', error, {
-        warehouseId: input.id
+      throwGraphQLError({
+        message: 'Failed to update warehouse',
+        code: 'WAREHOUSE_UPDATE_FAILED',
+        error
       })
     }
   }
@@ -54,8 +74,10 @@ export class WarehousesResolver {
     try {
       return await this.warehousesService.remove(id)
     } catch (error) {
-      throwGraphQLError('Failed to remove warehouse', 'WAREHOUSE_DELETE_FAILED', error, {
-        warehouseId: id
+      throwGraphQLError({
+        message: 'Failed to remove warehouse',
+        code: 'WAREHOUSE_DELETE_FAILED',
+        error
       })
     }
   }
