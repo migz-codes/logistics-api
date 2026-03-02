@@ -15,6 +15,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AuthResponse {
+  access_token: String!
+  user: User!
+}
+
 type Warehouse {
   id: String!
   accountable_id: String!
@@ -40,6 +45,8 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
+  login(input: LoginInput!): AuthResponse!
+  register(input: CreateUserInput!): AuthResponse!
   createWarehouse(input: CreateWarehouseInput!): Warehouse
   updateWarehouse(input: UpdateWarehouseInput!): Warehouse
   removeWarehouse(id: String!): Warehouse
@@ -47,6 +54,11 @@ type Mutation {
 
 input CreateUserInput {
   name: String!
+  email: String!
+  password: String!
+}
+
+input LoginInput {
   email: String!
   password: String!
 }
