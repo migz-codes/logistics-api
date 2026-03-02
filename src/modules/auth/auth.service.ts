@@ -57,7 +57,7 @@ export class AuthService {
 
     if (!payload || payload.type !== 'refresh' || !payload.jti)
       return throwGraphQLError({
-        message: 'Invalid refresh token',
+        message: 'Invalid or expired refresh token',
         code: 'INVALID_REFRESH_TOKEN'
       })
 
@@ -65,7 +65,7 @@ export class AuthService {
 
     if (!storedToken)
       return throwGraphQLError({
-        message: 'Invalid refresh token',
+        message: 'Invalid or expired refresh token',
         code: 'INVALID_REFRESH_TOKEN'
       })
 
@@ -73,7 +73,7 @@ export class AuthService {
 
     if (!user)
       return throwGraphQLError({
-        message: 'Invalid refresh token',
+        message: 'Invalid or expired refresh token',
         code: 'INVALID_REFRESH_TOKEN'
       })
 

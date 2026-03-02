@@ -1,10 +1,9 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
+import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 
 @Injectable()
 export class RefreshTokenService {
-  private readonly logger = new Logger(RefreshTokenService.name)
-
   constructor(private readonly prisma: PrismaService) {}
 
   async storeToken(userId: string, expiresAt: Date): Promise<string> {
@@ -15,7 +14,6 @@ export class RefreshTokenService {
       }
     })
 
-    this.logger.debug(`Stored new token ${created.id} for user ${userId}`)
     return created.id
   }
 
@@ -24,19 +22,22 @@ export class RefreshTokenService {
       where: { id: jti }
     })
 
-    if (!token) {
-      this.logger.debug(`Token ${jti} not found`)
-      return null
-    }
+    if (!token)
+      return throwGraphQLError({
+        code: 'UNAUTHORIZED',
+        message: 'Invalid or expired refresh token'
+      })
 
     if (token.expiresAt < new Date()) {
-      this.logger.debug(`Token ${jti} expired`)
       await this.prisma.refreshToken.delete({ where: { id: jti } }).catch(() => {})
-      return null
+
+      return throwGraphQLError({
+        code: 'UNAUTHORIZED',
+        message: 'Invalid or expired refresh token'
+      })
     }
 
     await this.prisma.refreshToken.delete({ where: { id: jti } })
-    this.logger.debug(`Token ${jti} deleted successfully`)
 
     return { userId: token.userId }
   }
@@ -46,9 +47,11 @@ export class RefreshTokenService {
       where: { id: jti }
     })
 
-    if (!token || token.expiresAt < new Date()) {
-      return null
-    }
+    if (!token || token.expiresAt < new Date())
+      return throwGraphQLError({
+        message: 'Invalid or expired refresh token',
+        code: 'UNAUTHORIZED'
+      })
 
     return { userId: token.userId, tokenId: token.id }
   }
@@ -69,10 +72,9 @@ export class RefreshTokenService {
 
   async cleanupExpiredTokens(): Promise<number> {
     const result = await this.prisma.refreshToken.deleteMany({
-      where: {
-        expiresAt: { lt: new Date() }
-      }
+      where: { expiresAt: { lt: new Date() } }
     })
+
     return result.count
   }
 }
