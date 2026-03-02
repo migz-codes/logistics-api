@@ -13,7 +13,10 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    }),
     UserModule,
     AuthModule,
     PrismaModule,
