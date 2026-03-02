@@ -1,11 +1,11 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import { JwtService } from '@nestjs/jwt'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
+import { JwtStrategy } from './jwt.strategy'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtStrategy: JwtStrategy) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context)
@@ -14,17 +14,13 @@ export class AuthGuard implements CanActivate {
 
     if (!token) return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
 
-    try {
-      const payload = await this.jwtService.verifyAsync(token)
+    const payload = await this.jwtStrategy.validate(token)
 
-      if (!payload.type || payload.type !== 'access')
-        return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
-
-      request.user = { id: payload.sub }
-
-      return true
-    } catch {
+    if (!payload || payload.type !== 'access')
       return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
-    }
+
+    request.user = { id: payload.sub }
+
+    return true
   }
 }
