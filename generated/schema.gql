@@ -16,7 +16,8 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type AuthResponse {
-  access_token: String!
+  accessToken: String!
+  refreshToken: String!
   user: User!
 }
 
@@ -45,8 +46,10 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
+  getUserById(id: String!): User!
   login(input: LoginInput!): AuthResponse!
   register(input: CreateUserInput!): AuthResponse!
+  refresh_token(refreshToken: String!): AuthResponse!
   createWarehouse(input: CreateWarehouseInput!): Warehouse
   updateWarehouse(input: UpdateWarehouseInput!): Warehouse
   removeWarehouse(id: String!): Warehouse

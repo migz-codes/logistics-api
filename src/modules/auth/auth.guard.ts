@@ -15,9 +15,12 @@ export class AuthGuard implements CanActivate {
     if (!token) return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
 
     try {
-      const user = await this.jwtService.verifyAsync(token)
+      const payload = await this.jwtService.verifyAsync(token)
 
-      request.user = { id: user.id }
+      if (!payload.type || payload.type !== 'access')
+        return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
+
+      request.user = { id: payload.sub }
 
       return true
     } catch {

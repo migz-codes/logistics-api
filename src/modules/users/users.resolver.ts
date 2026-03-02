@@ -11,4 +11,9 @@ export class UserResolver {
   async createUser(@Args('input') input: CreateUserInput) {
     return await this.userService.create(input)
   }
+
+  @Mutation(() => User)
+  async getUserById(@Args('id') id: string) {
+    return await this.userService.findById(id)
+  }
 }

@@ -27,4 +27,14 @@ export class UserService {
 
     return user
   }
+
+  async findById(id: string) {
+    const user = await this.prismaService.user.findUnique({ where: { id } })
+
+    if (!user) return throwGraphQLError({ message: 'User not found', code: 'USER_NOT_FOUND' })
+
+    delete user.password
+
+    return user
+  }
 }

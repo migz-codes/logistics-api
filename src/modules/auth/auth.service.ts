@@ -13,32 +13,66 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
+  private async generateTokens(id: string, email: string) {
+    const accessToken = await this.jwtService.signAsync(
+      { sub: id, type: 'access', email: email },
+      { expiresIn: '5m' }
+    )
+
+    const refreshToken = await this.jwtService.signAsync(
+      { sub: id, type: 'refresh', email: email },
+      { expiresIn: '1d' }
+    )
+
+    return { accessToken, refreshToken }
+  }
+
   async login(input: LoginInput) {
     const user = await this.userService.findByEmail(input.email)
+
+    if (!user) return null
+
+    const isPasswordValid = await compare(input.password, user.password)
+
+    if (!isPasswordValid) return null
+
+    delete user.password
 
     if (!user)
       return throwGraphQLError({ message: 'Invalid credentials', code: 'INVALID_CREDENTIALS' })
 
-    const isPasswordValid = await compare(input.password, user.password)
+    const { accessToken, refreshToken } = await this.generateTokens(user.id, user.email)
 
-    delete user.password
-
-    if (!isPasswordValid)
-      return throwGraphQLError({ message: 'Invalid credentials', code: 'INVALID_CREDENTIALS' })
-
-    const token = await this.jwtService.signAsync({ sub: user.id, email: user.email })
-
-    return { access_token: token, user }
+    return { accessToken, refreshToken, user }
   }
 
   async register(input: CreateUserInput) {
     const createdUser = await this.userService.create(input)
 
-    const { access_token, user } = await this.login({
-      email: createdUser.email,
-      password: input.password
-    })
+    const { accessToken, refreshToken } = await this.generateTokens(
+      createdUser.id,
+      createdUser.email
+    )
 
-    return { access_token, user }
+    return { accessToken, refreshToken, user: createdUser }
+  }
+
+  async refreshToken(refreshToken: string) {
+    const payload = await this.jwtService.verifyAsync(refreshToken)
+
+    if (payload.type !== 'refresh')
+      return throwGraphQLError({ message: 'Invalid refresh token', code: 'INVALID_refreshToken' })
+
+    const user = await this.userService.findById(payload.sub)
+
+    if (!user)
+      return throwGraphQLError({ message: 'Invalid refresh token', code: 'INVALID_refreshToken' })
+
+    const { accessToken, refreshToken: newRefreshToken } = await this.generateTokens(
+      user.id,
+      user.email
+    )
+
+    return { accessToken, refreshToken: newRefreshToken, user }
   }
 }

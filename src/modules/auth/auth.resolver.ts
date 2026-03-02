@@ -16,4 +16,9 @@ export class AuthResolver {
   async register(@Args('input') input: CreateUserInput) {
     return await this.authService.register(input)
   }
+
+  @Mutation(() => AuthResponse)
+  async refresh_token(@Args('refreshToken') refreshToken: string) {
+    return await this.authService.refreshToken(refreshToken)
+  }
 }

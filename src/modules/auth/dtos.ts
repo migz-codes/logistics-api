@@ -19,7 +19,10 @@ export class LoginInput {
 @ObjectType()
 export class AuthResponse {
   @Field(() => String)
-  access_token: string
+  accessToken: string
+
+  @Field(() => String)
+  refreshToken: string
 
   @Field(() => User)
   user: User
