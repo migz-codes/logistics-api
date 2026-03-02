@@ -8,7 +8,17 @@ import { GraphQLModule } from '@nestjs/graphql'
     GraphQLModule.forRoot<ApolloDriverConfig>({
       playground: true,
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'generated/schema.gql')
+      autoSchemaFile: join(process.cwd(), 'generated/schema.gql'),
+      debug: false,
+      formatError: (error) => {
+        const { message, extensions } = error
+
+        return {
+          message,
+          code: extensions?.code,
+          timestamp: extensions?.timestamp
+        }
+      }
     })
   ]
 })

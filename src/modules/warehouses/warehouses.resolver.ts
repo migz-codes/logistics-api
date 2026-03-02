@@ -30,6 +30,7 @@ export class WarehousesResolver {
     }
   }
 
+  @UseGuards(AuthGuard)
   @Query(() => [Warehouse], { name: 'warehouses', nullable: true })
   async findAll() {
     try {

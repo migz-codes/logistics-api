@@ -10,9 +10,7 @@ export function throwGraphQLError(params: {
     extensions: {
       code: params.code,
       message: params.message,
-      originalError: params.error?.message,
-      timestamp: new Date().toISOString(),
-      ...params.context
+      timestamp: new Date().toISOString()
     }
   })
 }
