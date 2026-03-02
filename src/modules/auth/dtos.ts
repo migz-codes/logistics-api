@@ -27,3 +27,9 @@ export class AuthResponse {
   @Field(() => User)
   user: User
 }
+
+@ObjectType()
+export class LogoutResponse {
+  @Field(() => Boolean)
+  success: boolean
+}

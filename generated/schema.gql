@@ -21,6 +21,10 @@ type AuthResponse {
   user: User!
 }
 
+type LogoutResponse {
+  success: Boolean!
+}
+
 type Warehouse {
   id: String!
   accountable_id: String!
@@ -49,7 +53,9 @@ type Mutation {
   getUserById(id: String!): User!
   login(input: LoginInput!): AuthResponse!
   register(input: CreateUserInput!): AuthResponse!
-  refresh_token(refreshToken: String!): AuthResponse!
+  refreshToken(refreshToken: String!): AuthResponse!
+  logout(refreshToken: String!): LogoutResponse!
+  logoutAll: LogoutResponse!
   createWarehouse(input: CreateWarehouseInput!): Warehouse
   updateWarehouse(input: UpdateWarehouseInput!): Warehouse
   removeWarehouse(id: String!): Warehouse

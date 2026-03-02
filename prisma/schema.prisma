@@ -15,7 +15,8 @@ model User {
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
 
-  warehouses Warehouse[]
+  warehouses    Warehouse[]
+  refreshTokens RefreshToken[]
 }
 
 model Warehouse {
@@ -36,4 +37,13 @@ model Warehouse {
 
   accountable    User     @relation(fields: [accountable_id], references: [id])
   accountable_id String
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

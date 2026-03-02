@@ -6,7 +6,13 @@ export interface JwtPayload {
   sub: string
   email: string
   type: 'access' | 'refresh'
+  jti?: string
 }
+
+export const TOKEN_EXPIRY = {
+  ACCESS: '5m',
+  REFRESH: '7d'
+} as const
 
 @Injectable()
 export class JwtStrategy {
@@ -38,20 +44,28 @@ export class JwtStrategy {
   }
 
   async signAccess(payload: Omit<JwtPayload, 'type'>): Promise<string> {
-    return this.sign(payload, '5m')
+    return this.sign(payload, TOKEN_EXPIRY.ACCESS)
   }
 
-  async signRefresh(payload: Omit<JwtPayload, 'type'>): Promise<string> {
+  async signRefresh(payload: Omit<JwtPayload, 'type'>, jti: string): Promise<string> {
     return this.jwtService.signAsync(
       {
         ...payload,
-        type: 'refresh'
+        type: 'refresh',
+        jti
       },
       {
         secret: this.secret,
-        expiresIn: this.convertToSeconds('1d')
+        expiresIn: this.convertToSeconds(TOKEN_EXPIRY.REFRESH)
       }
     )
+  }
+
+  getRefreshTokenExpiryDate(): Date {
+    const expiresAt = new Date()
+    const seconds = this.convertToSeconds(TOKEN_EXPIRY.REFRESH)
+    expiresAt.setSeconds(expiresAt.getSeconds() + seconds)
+    return expiresAt
   }
 
   private convertToSeconds(timeString: string): number {
