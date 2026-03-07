@@ -13,7 +13,8 @@
       "!.next",
       "!dist",
       "!build",
-      "!src/styles/**/*"
+      "!src/styles/**/*",
+      "!generated"
     ]
   },
   "formatter": {
