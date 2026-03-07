@@ -45,7 +45,10 @@ export class JwtStrategy {
   }
 
   async signAccess(payload: Omit<JwtPayload, 'type'>): Promise<string> {
-    return this.sign(payload, TOKEN_EXPIRY.ACCESS)
+    return this.jwtService.signAsync(
+      { ...payload, type: 'access' },
+      { secret: this.secret, expiresIn: convertToSeconds(TOKEN_EXPIRY.ACCESS) }
+    )
   }
 
   async signRefresh(payload: Omit<JwtPayload, 'type'>, jti: string): Promise<string> {
