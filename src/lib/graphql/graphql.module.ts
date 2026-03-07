@@ -12,12 +12,7 @@ import { GraphQLModule } from '@nestjs/graphql'
       debug: false,
       formatError: (error) => {
         const { message, extensions } = error
-
-        return {
-          message,
-          code: extensions?.code,
-          timestamp: extensions?.timestamp
-        }
+        return { message, code: extensions?.code, timestamp: extensions?.timestamp }
       }
     })
   ]

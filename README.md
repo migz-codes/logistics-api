@@ -24,38 +24,84 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Logistics API](https://github.com/migz-codes/logistics-api) - A NestJS-based logistics management system with GraphQL API.
 
 ## Project setup
 
 ```bash
-$ pnpm install
+# Using Bun (recommended)
+bun install
+
+# Or using npm
+npm install
 ```
 
 ## Compile and run the project
 
 ```bash
 # development
-$ pnpm run start
+bun run start
 
 # watch mode
-$ pnpm run start:dev
+bun run dev
 
 # production mode
-$ pnpm run start:prod
+bun run start:prod
+```
+
+## Docker Setup
+
+### Production
+
+```bash
+# Build and run with Docker Compose
+docker-compose up -d
+
+# Or build and run manually
+docker build -t logistics-api .
+docker run -p 3000:3000 logistics-api
+```
+
+### Environment Variables
+
+Create a `.env` file:
+
+```env
+# Database
+DATABASE_URL="postgresql://postgres:password@localhost:5432/logistics"
+
+# JWT
+JWT_SECRET="your-super-secret-jwt-key"
+
+# Application
+NODE_ENV="production"
+PORT=3000
+```
+
+## Database Setup
+
+```bash
+# Generate Prisma client
+bun prisma generate
+
+# Run migrations
+bun prisma migrate dev
+
+# Reset database (dev only)
+bun prisma migrate reset
 ```
 
 ## Run tests
 
 ```bash
 # unit tests
-$ pnpm run test
+bun run test
 
 # e2e tests
-$ pnpm run test:e2e
+bun run test:e2e
 
 # test coverage
-$ pnpm run test:cov
+bun run test:cov
 ```
 
 ## Deployment
