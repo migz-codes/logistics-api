@@ -12,3 +12,21 @@ export class CreateUserInput extends OmitType(User, ['id', 'created_at', 'update
   @Field(() => String)
   password: string
 }
+
+@InputType()
+export class UpdateProfileInput {
+  @Field(() => String)
+  name: string
+
+  @Field(() => String)
+  email: string
+}
+
+@InputType()
+export class UpdatePasswordInput {
+  @Field(() => String)
+  currentPassword: string
+
+  @Field(() => String)
+  newPassword: string
+}

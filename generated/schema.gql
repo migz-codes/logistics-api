@@ -44,13 +44,16 @@ type Warehouse {
 }
 
 type Query {
+  getUserById(id: String!): User!
+  getMe: User!
   warehouses: [Warehouse!]
   warehouse(id: String!): Warehouse
 }
 
 type Mutation {
   createUser(input: CreateUserInput!): User!
-  getUserById(id: String!): User!
+  updateProfile(userId: String!, input: UpdateProfileInput!): User!
+  updatePassword(userId: String!, input: UpdatePasswordInput!): User!
   login(input: LoginInput!): AuthResponse!
   register(input: CreateUserInput!): AuthResponse!
   refreshToken(refreshToken: String!): AuthResponse!
@@ -65,6 +68,16 @@ input CreateUserInput {
   name: String!
   email: String!
   password: String!
+}
+
+input UpdateProfileInput {
+  name: String!
+  email: String!
+}
+
+input UpdatePasswordInput {
+  currentPassword: String!
+  newPassword: String!
 }
 
 input LoginInput {
