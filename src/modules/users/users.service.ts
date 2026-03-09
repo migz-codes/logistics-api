@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
+import { Role } from 'generated/prisma/client'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { CreateUserInput, UpdatePasswordInput, UpdateProfileInput } from './dtos'
@@ -7,6 +8,25 @@ import { CreateUserInput, UpdatePasswordInput, UpdateProfileInput } from './dtos
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findAll() {
+    const users = await this.prismaService.user.findMany()
+    return users.map((user) => {
+      delete user.password
+      return user
+    })
+  }
+
+  async updateRole(userId: string, role: Role) {
+    const user = await this.prismaService.user.update({
+      where: { id: userId },
+      data: { role }
+    })
+
+    delete user.password
+
+    return user
+  }
 
   async create(input: CreateUserInput) {
     const hashedPassword = await bcrypt.hash(input.password, 10)

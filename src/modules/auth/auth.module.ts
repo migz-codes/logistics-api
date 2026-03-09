@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { forwardRef, Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
 import { ScheduleModule } from '@nestjs/schedule'
@@ -8,18 +8,25 @@ import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt.strategy'
 import { RefreshTokenService } from './refresh-token.service'
+import { RolesGuard } from './roles.guard'
 import { TokenCleanupTask } from './token-cleanup.task'
 
 @Module({
-  exports: [JwtModule, JwtStrategy],
+  exports: [JwtModule, JwtStrategy, RolesGuard],
   providers: [
     AuthService,
     AuthResolver,
     JwtStrategy,
     RefreshTokenService,
     PrismaService,
-    TokenCleanupTask
+    TokenCleanupTask,
+    RolesGuard
   ],
-  imports: [UserModule, ConfigModule, JwtModule.register({}), ScheduleModule.forRoot()]
+  imports: [
+    forwardRef(() => UserModule),
+    ConfigModule,
+    JwtModule.register({}),
+    ScheduleModule.forRoot()
+  ]
 })
 export class AuthModule {}

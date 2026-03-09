@@ -1,8 +1,9 @@
 import { Field, InputType, OmitType } from '@nestjs/graphql'
+import { Role } from 'generated/prisma/client'
 import { User } from './user.entity'
 
 @InputType()
-export class CreateUserInput extends OmitType(User, ['id', 'created_at', 'updated_at']) {
+export class CreateUserInput extends OmitType(User, ['id', 'created_at', 'updated_at', 'role']) {
   @Field(() => String)
   name: string
 
@@ -11,6 +12,15 @@ export class CreateUserInput extends OmitType(User, ['id', 'created_at', 'update
 
   @Field(() => String)
   password: string
+}
+
+@InputType()
+export class UpdateUserRoleInput {
+  @Field(() => String)
+  userId: string
+
+  @Field(() => Role)
+  role: Role
 }
 
 @InputType()
