@@ -60,8 +60,8 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput!): User!
   updateUserRole(input: UpdateUserRoleInput!): User!
-  updateProfile(userId: String!, input: UpdateProfileInput!): User!
-  updatePassword(userId: String!, input: UpdatePasswordInput!): User!
+  updateProfile(input: UpdateProfileInput!): User!
+  updatePassword(input: UpdatePasswordInput!): User!
   login(input: LoginInput!): AuthResponse!
   register(input: CreateUserInput!): AuthResponse!
   refreshToken(refreshToken: String!): AuthResponse!

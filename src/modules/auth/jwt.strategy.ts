@@ -11,7 +11,7 @@ export interface JwtPayload {
 }
 
 export const TOKEN_EXPIRY = {
-  ACCESS: '5m',
+  ACCESS: '30s',
   REFRESH: '7d'
 } as const
 

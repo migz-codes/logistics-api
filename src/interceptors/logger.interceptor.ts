@@ -2,6 +2,22 @@ import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nes
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { Observable, tap } from 'rxjs'
 
+const colors = {
+  reset: '\x1b[0m',
+  dim: '\x1b[2m',
+  cyan: '\x1b[36m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  magenta: '\x1b[35m'
+}
+
+const icons = {
+  query: '🔍',
+  mutation: '⚡',
+  subscription: '📡',
+  http: '🌐'
+}
+
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -13,22 +29,28 @@ export class LoggerInterceptor implements NestInterceptor {
       const request = context.switchToHttp().getRequest()
       const method = request?.method || 'UNKNOWN'
       const url = request?.url || 'unknown'
-      console.log(`HTTP ${method} started: ${url}`)
-      return next
-        .handle()
-        .pipe(tap(() => console.log(`HTTP ${method} ${url} finished in ${Date.now() - start}ms`)))
+      return next.handle().pipe(
+        tap(() => {
+          const duration = Date.now() - start
+          console.log(
+            `${icons.http} ${colors.cyan}${method}${colors.reset} ${url} ${colors.dim}${duration}ms${colors.reset}`
+          )
+        })
+      )
     }
 
-    const operationName = info.operation.operation
+    const operationType = info.operation.operation
     const fieldName = info.fieldName
-    console.log(`GraphQL ${operationName} started: ${fieldName}`)
+    const icon = icons[operationType as keyof typeof icons] || '📦'
 
-    return next
-      .handle()
-      .pipe(
-        tap(() =>
-          console.log(`GraphQL ${operationName} ${fieldName} finished in ${Date.now() - start}ms`)
+    return next.handle().pipe(
+      tap(() => {
+        const duration = Date.now() - start
+        const durationColor = duration > 500 ? colors.yellow : colors.green
+        console.log(
+          `${icon} ${colors.magenta}${fieldName}${colors.reset} ${durationColor}${duration}ms${colors.reset}`
         )
-      )
+      })
+    )
   }
 }

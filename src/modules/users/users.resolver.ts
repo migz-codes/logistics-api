@@ -1,6 +1,8 @@
 import { UseGuards } from '@nestjs/common'
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Role } from 'generated/prisma/client'
+import { AuthGuard } from '../auth/auth.guard'
+import { IAuthenticatedRequest } from '../auth/dtos'
 import { Roles } from '../auth/roles.decorator'
 import { RolesGuard } from '../auth/roles.guard'
 import {
@@ -41,12 +43,20 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async updateProfile(@Args('userId') userId: string, @Args('input') input: UpdateProfileInput) {
-    return await this.userService.updateProfile(userId, input)
+  @UseGuards(AuthGuard)
+  async updateProfile(
+    @Context('req') req: IAuthenticatedRequest,
+    @Args('input') input: UpdateProfileInput
+  ) {
+    return await this.userService.updateProfile(req.user.id, input)
   }
 
   @Mutation(() => User)
-  async updatePassword(@Args('userId') userId: string, @Args('input') input: UpdatePasswordInput) {
-    return await this.userService.updatePassword(userId, input)
+  @UseGuards(AuthGuard)
+  async updatePassword(
+    @Context('req') req: IAuthenticatedRequest,
+    @Args('input') input: UpdatePasswordInput
+  ) {
+    return await this.userService.updatePassword(req.user.id, input)
   }
 }

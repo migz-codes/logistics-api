@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { APP_FILTER } from '@nestjs/core'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { GraphQLExceptionFilter } from './filters/graphql-exception.filter'
 import { GraphqlModule } from './lib/graphql/graphql.module'
 import { PrismaModule } from './lib/prisma/prisma.module'
 import { PrismaService } from './lib/prisma/prisma.service'
@@ -24,6 +26,12 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module'
     WarehousesModule
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService, UserResolver, UserService]
+  providers: [
+    AppService,
+    PrismaService,
+    UserResolver,
+    UserService,
+    { provide: APP_FILTER, useClass: GraphQLExceptionFilter }
+  ]
 })
 export class AppModule {}
