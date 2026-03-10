@@ -1,9 +1,9 @@
 import { Request, UseGuards } from '@nestjs/common'
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
-import { CreateWarehouseInput, UpdateWarehouseInput } from './dtos'
+import { CreateWarehouseInput, UpdateWarehouseInput, WarehouseFiltersInput } from './dtos'
 import { Warehouse } from './warehouse.entity'
 import { WarehousesService } from './warehouses.service'
 
@@ -32,13 +32,27 @@ export class WarehousesResolver {
 
   @UseGuards(AuthGuard)
   @Query(() => [Warehouse], { name: 'warehouses', nullable: true })
-  async findAll() {
+  async findAll(@Args('filters', { nullable: true }) filters?: WarehouseFiltersInput) {
     try {
-      return await this.warehousesService.findAll()
+      return await this.warehousesService.findAll(filters)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to fetch warehouses',
         code: 'WAREHOUSES_FETCH_FAILED',
+        error
+      })
+    }
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(() => Int, { name: 'warehousesCount' })
+  async count(@Args('filters', { nullable: true }) filters?: WarehouseFiltersInput) {
+    try {
+      return await this.warehousesService.count(filters)
+    } catch (error) {
+      throwGraphQLError({
+        message: 'Failed to count warehouses',
+        code: 'WAREHOUSES_COUNT_FAILED',
         error
       })
     }

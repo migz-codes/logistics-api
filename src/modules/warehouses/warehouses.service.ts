@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
-import { CreateWarehouseInput, UpdateWarehouseInput } from './dtos'
+import { CreateWarehouseInput, UpdateWarehouseInput, WarehouseFiltersInput } from './dtos'
 
 @Injectable()
 export class WarehousesService {
@@ -27,10 +27,65 @@ export class WarehousesService {
     return warehouse
   }
 
-  async findAll() {
-    const warehouses = await this.prismaService.warehouse.findMany()
+  async findAll(filters?: WarehouseFiltersInput) {
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { address: { contains: filters.search, mode: 'insensitive' } },
+        { city: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    if (filters?.region) {
+      where.state = filters.region
+    }
+
+    if (filters?.category) {
+      where.category = filters.category
+    }
+
+    if (filters?.status) {
+      where.status = filters.status
+    }
+
+    const warehouses = await this.prismaService.warehouse.findMany({
+      where,
+      skip: filters?.skip,
+      take: filters?.take,
+      orderBy: { created_at: 'desc' }
+    })
 
     return warehouses
+  }
+
+  async count(filters?: WarehouseFiltersInput) {
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { address: { contains: filters.search, mode: 'insensitive' } },
+        { city: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    if (filters?.region) {
+      where.state = filters.region
+    }
+
+    if (filters?.category) {
+      where.category = filters.category
+    }
+
+    if (filters?.status) {
+      where.status = filters.status
+    }
+
+    return this.prismaService.warehouse.count({ where })
   }
 
   async findOne(id: string) {

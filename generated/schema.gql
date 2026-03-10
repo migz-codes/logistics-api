@@ -53,8 +53,18 @@ type Query {
   getUserById(id: String!): User!
   getAllUsers: [User!]!
   getMe: User!
-  warehouses: [Warehouse!]
+  warehouses(filters: WarehouseFiltersInput): [Warehouse!]
+  warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
+}
+
+input WarehouseFiltersInput {
+  search: String
+  region: String
+  category: String
+  status: String
+  skip: Int
+  take: Int
 }
 
 type Mutation {
@@ -110,7 +120,7 @@ input CreateWarehouseInput {
   address: String!
   zip_code: String!
   country: String!
-  accountable_id: String!
+  accountable_id: String = ""
 }
 
 input UpdateWarehouseInput {
