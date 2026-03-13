@@ -7,7 +7,9 @@ import { Roles } from '../roles/roles.decorator'
 import { RolesGuard } from '../roles/roles.guard'
 import { CompaniesService } from './companies.service'
 import { Company } from './company.entity'
+import { CompanyAccess } from './decorators/company-access.decorator'
 import { CompanyFiltersInput, CreateCompanyInput, UpdateCompanyInput } from './dtos'
+import { CompanyAccessGuard } from './guards/company-access.guard'
 
 @Resolver(() => Company)
 export class CompaniesResolver {
@@ -20,10 +22,10 @@ export class CompaniesResolver {
     @Args('input') input: CreateCompanyInput,
     @Context('req') req: IAuthenticatedRequest
   ) {
-    const userId = req.user.id
+    const user_id = req.user.id
 
     try {
-      return await this.companiesService.create({ ...input, owner_id: userId })
+      return await this.companiesService.create({ ...input, owner_id: user_id })
     } catch (error) {
       throwGraphQLError({
         error,
@@ -37,10 +39,10 @@ export class CompaniesResolver {
   @Roles('INVESTOR_ADMIN', 'ADMIN')
   @Query(() => [Company], { name: 'getMyCompanies', nullable: true })
   async getMyCompanies(@Context('req') req: IAuthenticatedRequest) {
-    const userId = req.user.id
+    const user_id = req.user.id
 
     try {
-      return await this.companiesService.findByOwner(userId)
+      return await this.companiesService.findByOwner(user_id)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to fetch companies',
@@ -80,7 +82,8 @@ export class CompaniesResolver {
     }
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, CompanyAccessGuard)
+  @CompanyAccess('member', 'id')
   @Query(() => Company, { name: 'company', nullable: true })
   async findOne(@Args('id', { type: () => String }) id: string) {
     try {
@@ -94,8 +97,9 @@ export class CompaniesResolver {
     }
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CompanyAccessGuard)
   @Roles('INVESTOR_ADMIN', 'ADMIN')
+  @CompanyAccess('owner', 'input.id')
   @Mutation(() => Company, { nullable: true })
   async updateCompany(@Args('input') input: UpdateCompanyInput) {
     try {
@@ -109,8 +113,9 @@ export class CompaniesResolver {
     }
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CompanyAccessGuard)
   @Roles('INVESTOR_ADMIN', 'ADMIN')
+  @CompanyAccess('owner', 'id')
   @Mutation(() => Company, { nullable: true })
   async removeCompany(@Args('id', { type: () => String }) id: string) {
     try {
@@ -124,15 +129,16 @@ export class CompaniesResolver {
     }
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CompanyAccessGuard)
   @Roles('INVESTOR_ADMIN', 'ADMIN')
+  @CompanyAccess('owner', 'company_id')
   @Mutation(() => Company, { nullable: true })
   async addCompanyMember(
-    @Args('companyId', { type: () => String }) companyId: string,
-    @Args('userId', { type: () => String }) userId: string
+    @Args('company_id', { type: () => String }) company_id: string,
+    @Args('user_id', { type: () => String }) user_id: string
   ) {
     try {
-      return await this.companiesService.addMember(companyId, userId)
+      return await this.companiesService.addMember(company_id, user_id)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to add member to company',
@@ -142,15 +148,16 @@ export class CompaniesResolver {
     }
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard, CompanyAccessGuard)
   @Roles('INVESTOR_ADMIN', 'ADMIN')
+  @CompanyAccess('owner', 'company_id')
   @Mutation(() => Company, { nullable: true })
   async removeCompanyMember(
-    @Args('companyId', { type: () => String }) companyId: string,
-    @Args('userId', { type: () => String }) userId: string
+    @Args('company_id', { type: () => String }) company_id: string,
+    @Args('user_id', { type: () => String }) user_id: string
   ) {
     try {
-      return await this.companiesService.removeMember(companyId, userId)
+      return await this.companiesService.removeMember(company_id, user_id)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to remove member from company',

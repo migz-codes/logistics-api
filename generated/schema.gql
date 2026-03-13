@@ -12,6 +12,7 @@ type User {
 }
 
 enum Role {
+  INVESTOR
   INVESTOR_ADMIN
   ADMIN
 }
@@ -103,8 +104,8 @@ type Mutation {
   createCompany(input: CreateCompanyInput!): Company
   updateCompany(input: UpdateCompanyInput!): Company
   removeCompany(id: String!): Company
-  addCompanyMember(companyId: String!, userId: String!): Company
-  removeCompanyMember(companyId: String!, userId: String!): Company
+  addCompanyMember(company_id: String!, user_id: String!): Company
+  removeCompanyMember(company_id: String!, user_id: String!): Company
 }
 
 input CreateUserInput {

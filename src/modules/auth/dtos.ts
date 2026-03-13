@@ -4,6 +4,9 @@ import { User } from '../users/user.entity'
 export interface IAuthenticatedRequest {
   user: {
     id: string
+    role?: string
+    companyIds?: string[]
+    ownedCompanyIds?: string[]
   }
 }
 

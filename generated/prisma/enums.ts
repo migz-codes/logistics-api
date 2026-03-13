@@ -10,6 +10,7 @@
 */
 
 export const Role = {
+  INVESTOR: 'INVESTOR',
   INVESTOR_ADMIN: 'INVESTOR_ADMIN',
   ADMIN: 'ADMIN'
 } as const
