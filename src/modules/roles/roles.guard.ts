@@ -24,9 +24,21 @@ export class RolesGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context)
     const request = ctx.getContext().req
 
-    // User should already be authenticated by AuthGuard
+    // Check if user is authenticated
+    const token = request.headers.authorization?.split(' ')[1]
+    if (!token) {
+      return throwGraphQLError({
+        message: 'Authentication required to access this resource',
+        code: 'UNAUTHORIZED'
+      })
+    }
+
+    // Check if user exists in request (set by AuthGuard)
     if (!request.user) {
-      return throwGraphQLError({ message: 'User not authenticated', code: 'UNAUTHORIZED' })
+      return throwGraphQLError({
+        message: 'User not authenticated. Please log in to continue.',
+        code: 'UNAUTHORIZED'
+      })
     }
 
     // Get user role from database if not already set
@@ -36,14 +48,23 @@ export class RolesGuard implements CanActivate {
         select: { role: true }
       })
 
-      if (!user) return throwGraphQLError({ message: 'User not found', code: 'USER_NOT_FOUND' })
+      if (!user)
+        return throwGraphQLError({
+          message: 'User not found in database',
+          code: 'USER_NOT_FOUND'
+        })
 
       request.user.role = user.role
     }
 
     const hasRole = requiredRoles.includes(request.user.role)
 
-    if (!hasRole) return throwGraphQLError({ message: 'Forbidden', code: 'FORBIDDEN' })
+    if (!hasRole) {
+      return throwGraphQLError({
+        message: `Insufficient permissions. Required role: ${requiredRoles.join(' or ')}. Current role: ${request.user.role}`,
+        code: 'INSUFFICIENT_PERMISSIONS'
+      })
+    }
 
     return true
   }

@@ -29,14 +29,14 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  @UseGuards(RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   async getAllUsers() {
     return await this.userService.findAll()
   }
 
   @Mutation(() => User)
-  @UseGuards(RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
   async updateUserRole(@Args('input') input: UpdateUserRoleInput) {
     return await this.userService.updateRole(input.userId, input.role)
