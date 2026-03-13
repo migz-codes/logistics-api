@@ -1,5 +1,5 @@
-import { Request, UseGuards } from '@nestjs/common'
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
@@ -18,7 +18,7 @@ export class CompaniesResolver {
   @Mutation(() => Company, { nullable: true })
   async createCompany(
     @Args('input') input: CreateCompanyInput,
-    @Request() req: IAuthenticatedRequest
+    @Context('req') req: IAuthenticatedRequest
   ) {
     const userId = req.user.id
 
@@ -29,6 +29,23 @@ export class CompaniesResolver {
         error,
         code: 'COMPANY_CREATE_FAILED',
         message: 'Failed to create company'
+      })
+    }
+  }
+
+  @UseGuards(AuthGuard, RolesGuard)
+  @Roles('INVESTOR_ADMIN', 'ADMIN')
+  @Query(() => [Company], { name: 'getMyCompanies', nullable: true })
+  async getMyCompanies(@Context('req') req: IAuthenticatedRequest) {
+    const userId = req.user.id
+
+    try {
+      return await this.companiesService.findByOwner(userId)
+    } catch (error) {
+      throwGraphQLError({
+        message: 'Failed to fetch companies',
+        code: 'COMPANIES_FETCH_FAILED',
+        error
       })
     }
   }

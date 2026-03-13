@@ -66,6 +66,7 @@ type Query {
   warehouses(filters: WarehouseFiltersInput): [Warehouse!]
   warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
+  getMyCompanies: [Company!]
   companies(filters: CompanyFiltersInput): [Company!]
   companiesCount(filters: CompanyFiltersInput): Int!
   company(id: String!): Company
@@ -155,9 +156,10 @@ input UpdateWarehouseInput {
 input CreateCompanyInput {
   name: String!
   logo: String
-  owner_id: String!
 }
 
 input UpdateCompanyInput {
   id: String!
+  name: String
+  logo: String
 }

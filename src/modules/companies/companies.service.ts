@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
-import { CreateCompanyInput, UpdateCompanyInput, CompanyFiltersInput } from './dtos'
+import { CompanyFiltersInput, CreateCompanyInput, UpdateCompanyInput } from './dtos'
 
 @Injectable()
 export class CompaniesService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(input: CreateCompanyInput) {
+  async create(input: CreateCompanyInput & { owner_id: string }) {
     const company = await this.prismaService.company.create({
       data: {
         name: input.name,
@@ -18,13 +18,20 @@ export class CompaniesService {
     return company
   }
 
+  async findByOwner(ownerId: string) {
+    const companies = await this.prismaService.company.findMany({
+      where: { owner_id: ownerId },
+      orderBy: { created_at: 'desc' }
+    })
+
+    return companies
+  }
+
   async findAll(filters?: CompanyFiltersInput) {
     const where: Record<string, unknown> = {}
 
     if (filters?.search) {
-      where.OR = [
-        { name: { contains: filters.search, mode: 'insensitive' } }
-      ]
+      where.OR = [{ name: { contains: filters.search, mode: 'insensitive' } }]
     }
 
     const companies = await this.prismaService.company.findMany({
@@ -41,9 +48,7 @@ export class CompaniesService {
     const where: Record<string, unknown> = {}
 
     if (filters?.search) {
-      where.OR = [
-        { name: { contains: filters.search, mode: 'insensitive' } }
-      ]
+      where.OR = [{ name: { contains: filters.search, mode: 'insensitive' } }]
     }
 
     return this.prismaService.company.count({ where })
@@ -65,7 +70,7 @@ export class CompaniesService {
   async update(input: UpdateCompanyInput) {
     const company = await this.prismaService.company.update({
       where: { id: input.id },
-      data: { 
+      data: {
         name: input.name,
         logo: input.logo
       }
