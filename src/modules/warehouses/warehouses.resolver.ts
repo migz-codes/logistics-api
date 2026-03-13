@@ -1,5 +1,5 @@
-import { Request, UseGuards } from '@nestjs/common'
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { UseGuards } from '@nestjs/common'
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
@@ -15,9 +15,9 @@ export class WarehousesResolver {
   @Mutation(() => Warehouse, { nullable: true })
   async createWarehouse(
     @Args('input') input: CreateWarehouseInput,
-    @Request() req: IAuthenticatedRequest
+    @Context() ctx: { req: IAuthenticatedRequest }
   ) {
-    const userId = req.user.id
+    const userId = ctx.req.user.id
 
     try {
       return await this.warehousesService.create({ ...input, accountable_id: userId })
