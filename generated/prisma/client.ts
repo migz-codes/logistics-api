@@ -43,12 +43,17 @@ export { Prisma }
  */
 export type User = Prisma.UserModel
 /**
- * Model Warehouse
- * 
- */
-export type Warehouse = Prisma.WarehouseModel
-/**
  * Model RefreshToken
  * 
  */
 export type RefreshToken = Prisma.RefreshTokenModel
+/**
+ * Model Company
+ * 
+ */
+export type Company = Prisma.CompanyModel
+/**
+ * Model Warehouse
+ * 
+ */
+export type Warehouse = Prisma.WarehouseModel

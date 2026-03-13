@@ -13,16 +13,41 @@ enum Role {
 }
 
 model User {
-  id         String      @id @default(cuid())
+  id         String      @id @default(uuid())
   name       String
   email      String      @unique
   password   String
+  updated_at DateTime    @updatedAt
+  created_at DateTime    @default(now())
   role       Role        @default(ADMIN)
+
+  warehouses     Warehouse[]
+  refresh_tokens RefreshToken[]
+  companies      Company[] @relation("CompanyOwner")
+  member_of      Company[] @relation("CompanyMember")
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  expires_at DateTime
+  created_at DateTime @default(now())
+
+  user_id String
+  user    User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Company {
+  id         String   @id @default(uuid())
+  name       String
+  logo       String?
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
 
-  warehouses    Warehouse[]
-  refreshTokens RefreshToken[]
+  owner      User       @relation("CompanyOwner", fields: [owner_id], references: [id])
+  owner_id   String
+  
+  members    User[]     @relation("CompanyMember")
+  warehouses Warehouse[]
 }
 
 model Warehouse {
@@ -43,13 +68,7 @@ model Warehouse {
 
   accountable    User     @relation(fields: [accountable_id], references: [id])
   accountable_id String
-}
 
-model RefreshToken {
-  id        String   @id @default(cuid())
-  userId    String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company        Company  @relation(fields: [company_id], references: [id])
+  company_id     String
 }
