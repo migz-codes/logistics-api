@@ -10,8 +10,8 @@
 */
 
 export const Role = {
-  ADMIN: 'ADMIN',
-  SUPERADMIN: 'SUPERADMIN'
+  INVESTOR_ADMIN: 'INVESTOR_ADMIN',
+  ADMIN: 'ADMIN'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]

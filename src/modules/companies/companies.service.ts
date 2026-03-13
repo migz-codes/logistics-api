@@ -1,0 +1,116 @@
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '@/src/lib/prisma/prisma.service'
+import { CreateCompanyInput, UpdateCompanyInput, CompanyFiltersInput } from './dtos'
+
+@Injectable()
+export class CompaniesService {
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async create(input: CreateCompanyInput) {
+    const company = await this.prismaService.company.create({
+      data: {
+        name: input.name,
+        logo: input.logo,
+        owner_id: input.owner_id
+      }
+    })
+
+    return company
+  }
+
+  async findAll(filters?: CompanyFiltersInput) {
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [
+        { name: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    const companies = await this.prismaService.company.findMany({
+      where,
+      skip: filters?.skip,
+      take: filters?.take,
+      orderBy: { created_at: 'desc' }
+    })
+
+    return companies
+  }
+
+  async count(filters?: CompanyFiltersInput) {
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [
+        { name: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    return this.prismaService.company.count({ where })
+  }
+
+  async findOne(id: string) {
+    const company = await this.prismaService.company.findUnique({
+      where: { id },
+      include: {
+        owner: true,
+        members: true,
+        warehouses: true
+      }
+    })
+
+    return company
+  }
+
+  async update(input: UpdateCompanyInput) {
+    const company = await this.prismaService.company.update({
+      where: { id: input.id },
+      data: { 
+        name: input.name,
+        logo: input.logo
+      }
+    })
+
+    return company
+  }
+
+  async remove(id: string) {
+    const company = await this.prismaService.company.delete({
+      where: { id }
+    })
+
+    return company
+  }
+
+  async addMember(companyId: string, userId: string) {
+    const company = await this.prismaService.company.update({
+      where: { id: companyId },
+      data: {
+        members: {
+          connect: { id: userId }
+        }
+      },
+      include: {
+        members: true
+      }
+    })
+
+    return company
+  }
+
+  async removeMember(companyId: string, userId: string) {
+    const company = await this.prismaService.company.update({
+      where: { id: companyId },
+      data: {
+        members: {
+          disconnect: { id: userId }
+        }
+      },
+      include: {
+        members: true
+      }
+    })
+
+    return company
+  }
+}

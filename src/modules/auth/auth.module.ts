@@ -4,15 +4,15 @@ import { JwtModule } from '@nestjs/jwt'
 import { ScheduleModule } from '@nestjs/schedule'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import { UserModule } from '../users/users.module'
+import { AuthGuard } from './auth.guard'
 import { AuthResolver } from './auth.resolver'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './jwt.strategy'
 import { RefreshTokenService } from './refresh-token.service'
-import { RolesGuard } from './roles.guard'
 import { TokenCleanupTask } from './token-cleanup.task'
 
 @Module({
-  exports: [JwtModule, JwtStrategy, RolesGuard],
+  exports: [JwtModule, JwtStrategy, AuthGuard],
   providers: [
     AuthService,
     AuthResolver,
@@ -20,7 +20,7 @@ import { TokenCleanupTask } from './token-cleanup.task'
     RefreshTokenService,
     PrismaService,
     TokenCleanupTask,
-    RolesGuard
+    AuthGuard
   ],
   imports: [
     forwardRef(() => UserModule),

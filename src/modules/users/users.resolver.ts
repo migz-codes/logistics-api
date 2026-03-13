@@ -3,8 +3,8 @@ import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Role } from 'generated/prisma/client'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
-import { Roles } from '../auth/roles.decorator'
-import { RolesGuard } from '../auth/roles.guard'
+import { Roles } from '../roles/roles.decorator'
+import { RolesGuard } from '../roles/roles.guard'
 import {
   CreateUserInput,
   UpdatePasswordInput,
@@ -30,14 +30,14 @@ export class UserResolver {
 
   @Query(() => [User])
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPERADMIN)
+  @Roles(Role.ADMIN)
   async getAllUsers() {
     return await this.userService.findAll()
   }
 
   @Mutation(() => User)
   @UseGuards(RolesGuard)
-  @Roles(Role.SUPERADMIN)
+  @Roles(Role.ADMIN)
   async updateUserRole(@Args('input') input: UpdateUserRoleInput) {
     return await this.userService.updateRole(input.userId, input.role)
   }

@@ -4,14 +4,12 @@ import { GqlExecutionContext } from '@nestjs/graphql'
 import { Role } from 'generated/prisma/client'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
-import { JwtStrategy } from './jwt.strategy'
 import { ROLES_KEY } from './roles.decorator'
 
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly jwtStrategy: JwtStrategy,
     private readonly prismaService: PrismaService
   ) {}
 
@@ -25,25 +23,25 @@ export class RolesGuard implements CanActivate {
 
     const ctx = GqlExecutionContext.create(context)
     const request = ctx.getContext().req
-    const token = request.headers.authorization?.split(' ')[1]
 
-    if (!token) return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
+    // User should already be authenticated by AuthGuard
+    if (!request.user) {
+      return throwGraphQLError({ message: 'User not authenticated', code: 'UNAUTHORIZED' })
+    }
 
-    const payload = await this.jwtStrategy.validate(token)
+    // Get user role from database if not already set
+    if (!request.user.role) {
+      const user = await this.prismaService.user.findUnique({
+        where: { id: request.user.id },
+        select: { role: true }
+      })
 
-    if (!payload || payload.type !== 'access')
-      return throwGraphQLError({ message: 'Unauthorized', code: 'UNAUTHORIZED' })
+      if (!user) return throwGraphQLError({ message: 'User not found', code: 'USER_NOT_FOUND' })
 
-    const user = await this.prismaService.user.findUnique({
-      where: { id: payload.sub },
-      select: { role: true }
-    })
+      request.user.role = user.role
+    }
 
-    if (!user) return throwGraphQLError({ message: 'User not found', code: 'USER_NOT_FOUND' })
-
-    request.user = { id: payload.sub, role: user.role }
-
-    const hasRole = requiredRoles.includes(user.role)
+    const hasRole = requiredRoles.includes(request.user.role)
 
     if (!hasRole) return throwGraphQLError({ message: 'Forbidden', code: 'FORBIDDEN' })
 

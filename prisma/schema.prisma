@@ -8,8 +8,8 @@ datasource db {
 }
 
 enum Role {
+  INVESTOR_ADMIN
   ADMIN
-  SUPERADMIN
 }
 
 model User {
