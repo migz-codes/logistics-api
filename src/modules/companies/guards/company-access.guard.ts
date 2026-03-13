@@ -2,12 +2,16 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common'
 import { Reflector } from '@nestjs/core'
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { Role } from 'generated/prisma/client'
+import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { COMPANY_ACCESS_KEY, CompanyAccessOptions } from '../decorators/company-access.decorator'
 
 @Injectable()
 export class CompanyAccessGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly prismaService: PrismaService
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const accessOptions = this.reflector.getAllAndOverride<CompanyAccessOptions>(
@@ -23,6 +27,11 @@ export class CompanyAccessGuard implements CanActivate {
 
     if (!request.user)
       return throwGraphQLError({ message: 'Authentication required', code: 'UNAUTHORIZED' })
+
+    // Load company context if not already loaded
+    if (!request.user.companyIds) {
+      await this.loadCompanyContext(request)
+    }
 
     if (request.user.role === Role.ADMIN) return true
 
@@ -56,6 +65,27 @@ export class CompanyAccessGuard implements CanActivate {
     }
 
     return true
+  }
+
+  private async loadCompanyContext(request: any): Promise<void> {
+    const user = await this.prismaService.user.findUnique({
+      where: { id: request.user.id },
+      select: {
+        role: true,
+        companies: { select: { id: true } },
+        member_of: { select: { id: true } }
+      }
+    })
+
+    if (user) {
+      const ownedCompanyIds = user.companies.map((c) => c.id)
+      const memberCompanyIds = user.member_of.map((c) => c.id)
+      const allCompanyIds = [...new Set([...ownedCompanyIds, ...memberCompanyIds])]
+
+      request.user.role = user.role
+      request.user.ownedCompanyIds = ownedCompanyIds
+      request.user.companyIds = allCompanyIds
+    }
   }
 
   private extractCompanyId(args: Record<string, any>, path: string): string | null {

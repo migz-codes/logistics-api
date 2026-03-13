@@ -20,7 +20,7 @@ model User {
   password   String
   updated_at DateTime    @updatedAt
   created_at DateTime    @default(now())
-  role       Role        @default(ADMIN)
+  role       Role        @default(INVESTOR)
 
   warehouses     Warehouse[]
   refresh_tokens RefreshToken[]

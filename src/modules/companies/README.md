@@ -4,21 +4,7 @@ This module implements company-based multi-tenancy, ensuring users can only acce
 
 ## Components
 
-### 1. `CompanyContextInterceptor`
-**Location:** `interceptors/company-context.interceptor.ts`
-
-Enriches `request.user` with company context after authentication:
-
-```ts
-request.user = {
-  id: string,
-  role: Role,
-  companyIds: string[],      // Companies user owns OR is member of
-  ownedCompanyIds: string[], // Companies user owns
-}
-```
-
-### 2. `@CompanyAccess()` Decorator
+### 1. `@CompanyAccess()` Decorator
 **Location:** `decorators/company-access.decorator.ts`
 
 Declares required access level and specifies which arg contains the company ID:
@@ -30,13 +16,24 @@ Declares required access level and specifies which arg contains the company ID:
 @CompanyAccess('member', 'input.company_id') // snake_case in input
 ```
 
-### 3. `CompanyAccessGuard`
+### 2. `CompanyAccessGuard`
 **Location:** `guards/company-access.guard.ts`
 
 Validates company access based on `@CompanyAccess()` decorator:
+- Loads company context (owned/member companies) from database
 - Extracts `companyId` using the path specified in the decorator
 - **ADMIN role bypasses all checks**
 - Returns error if user lacks required access
+
+Enriches `request.user` with:
+```ts
+request.user = {
+  id: string,
+  role: Role,
+  companyIds: string[],      // Companies user owns OR is member of
+  ownedCompanyIds: string[], // Companies user owns
+}
+```
 
 ## Usage
 
@@ -105,13 +102,21 @@ async someMethod(@Context('req') req: IAuthenticatedRequest) {
 
 To add company access control to another module:
 
-1. Import the guard and decorator:
+1. Import `CompaniesModule` in your module to get access to the guard:
+```ts
+import { CompaniesModule } from '../companies/companies.module'
+
+@Module({
+  imports: [CompaniesModule],
+  // ...
+})
+```
+
+2. Import the guard and decorator in your resolver:
 ```ts
 import { CompanyAccess } from '../companies/decorators/company-access.decorator'
 import { CompanyAccessGuard } from '../companies/guards/company-access.guard'
 ```
-
-2. Ensure `CompanyContextInterceptor` runs (it's registered via `APP_INTERCEPTOR` in `CompaniesModule`)
 
 3. Apply to resolver methods with the correct arg path:
 ```ts
