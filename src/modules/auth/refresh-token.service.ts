@@ -9,8 +9,8 @@ export class RefreshTokenService {
   async storeToken(userId: string, expiresAt: Date): Promise<string> {
     const created = await this.prisma.refreshToken.create({
       data: {
-        userId,
-        expiresAt
+        user_id: userId,
+        expires_at: expiresAt
       }
     })
 
@@ -28,7 +28,7 @@ export class RefreshTokenService {
         message: 'Invalid or expired refresh token'
       })
 
-    if (token.expiresAt < new Date()) {
+    if (token.expires_at < new Date()) {
       await this.prisma.refreshToken.delete({ where: { id: jti } }).catch(() => {})
 
       return throwGraphQLError({
@@ -39,7 +39,7 @@ export class RefreshTokenService {
 
     await this.prisma.refreshToken.delete({ where: { id: jti } })
 
-    return { userId: token.userId }
+    return { userId: token.user_id }
   }
 
   async validateToken(jti: string): Promise<{ userId: string; tokenId: string } | null> {
@@ -47,13 +47,13 @@ export class RefreshTokenService {
       where: { id: jti }
     })
 
-    if (!token || token.expiresAt < new Date())
+    if (!token || token.expires_at < new Date())
       return throwGraphQLError({
         message: 'Invalid or expired refresh token',
         code: 'UNAUTHORIZED'
       })
 
-    return { userId: token.userId, tokenId: token.id }
+    return { userId: token.user_id, tokenId: token.id }
   }
 
   async invalidateToken(tokenId: string): Promise<void> {
@@ -66,13 +66,13 @@ export class RefreshTokenService {
 
   async invalidateAllUserTokens(userId: string): Promise<void> {
     await this.prisma.refreshToken.deleteMany({
-      where: { userId }
+      where: { user_id: userId }
     })
   }
 
   async cleanupExpiredTokens(): Promise<number> {
     const result = await this.prisma.refreshToken.deleteMany({
-      where: { expiresAt: { lt: new Date() } }
+      where: { expires_at: { lt: new Date() } }
     })
 
     return result.count

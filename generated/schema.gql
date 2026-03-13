@@ -34,6 +34,7 @@ type LogoutResponse {
 type Warehouse {
   id: String!
   accountable_id: String!
+  company_id: String!
   title: String!
   description: String!
   city: String!
@@ -121,6 +122,7 @@ input CreateWarehouseInput {
   zip_code: String!
   country: String!
   accountable_id: String = ""
+  company_id: String!
 }
 
 input UpdateWarehouseInput {

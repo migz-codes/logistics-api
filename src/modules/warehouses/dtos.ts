@@ -59,6 +59,9 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
 
   @Field(() => String, { nullable: true, defaultValue: '' })
   accountable_id: string
+
+  @Field(() => String)
+  company_id: string
 }
 
 @InputType()

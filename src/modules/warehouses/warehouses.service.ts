@@ -20,7 +20,8 @@ export class WarehousesService {
         zip_code: input.zip_code,
         category: input.category,
         description: input.description,
-        accountable_id: input.accountable_id
+        accountable_id: input.accountable_id,
+        company_id: input.company_id
       }
     })
 

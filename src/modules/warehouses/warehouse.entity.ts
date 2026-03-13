@@ -10,6 +10,9 @@ export class Warehouse implements PrismaWarehouse {
   accountable_id: string
 
   @Field(() => String)
+  company_id: string
+
+  @Field(() => String)
   title: string
 
   @Field(() => String)
