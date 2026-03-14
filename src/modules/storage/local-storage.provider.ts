@@ -1,7 +1,7 @@
+import { randomUUID } from 'node:crypto'
+import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { Injectable } from '@nestjs/common'
-import { randomUUID } from 'crypto'
-import { existsSync, mkdirSync, unlinkSync, writeFileSync } from 'fs'
-import { join } from 'path'
 import type { FileInput, StorageProvider, UploadedFile } from './storage.interface'
 
 @Injectable()

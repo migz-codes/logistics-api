@@ -1,6 +1,6 @@
+import { join } from 'node:path'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { join } from 'path'
 import { AppModule } from './app.module'
 import { LoggerInterceptor } from './interceptors/logger.interceptor'
 

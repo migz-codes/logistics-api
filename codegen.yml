@@ -1,0 +1,19 @@
+schema: ./generated/schema.gql
+generates:
+  ./generated/types/index.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+    config:
+      skipTypename: false
+      enumsAsTypes: false
+      scalars:
+        DateTime: string
+  ./generated/types/schema.ts:
+    plugins:
+      - typescript
+    config:
+      skipTypename: false
+      enumsAsTypes: false
+      scalars:
+        DateTime: string
