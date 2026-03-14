@@ -7,23 +7,19 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "biome check --fix --unsafe",
     "start": "nest start",
     "dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/src/main.js",
     "lint": "biome lint && tsc --noEmit",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "format": "biome check --fix --unsafe",
     "prisma:push": "prisma db push",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name",
     "prisma:reset": "prisma migrate reset",
     "docker:test": "docker-compose build --no-cache && docker-compose up",
-    "graphql:types": "graphql-codegen"
+    "graphql:types": "graphql-codegen",
+    "generate:types": "bun run prisma:generate && bun run graphql:types"
   },
   "dependencies": {
     "@apollo/server": "4.11.0",

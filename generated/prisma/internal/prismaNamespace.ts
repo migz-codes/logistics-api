@@ -780,18 +780,19 @@ export type CompanyScalarFieldEnum = (typeof CompanyScalarFieldEnum)[keyof typeo
 export const WarehouseScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  price: 'price',
+  area_total: 'area_total',
   description: 'description',
+  images: 'images',
   city: 'city',
   state: 'state',
-  category: 'category',
-  area: 'area',
-  status: 'status',
-  price: 'price',
   address: 'address',
-  zip_code: 'zip_code',
   country: 'country',
+  zip_code: 'zip_code',
+  address_complement: 'address_complement',
   updated_at: 'updated_at',
   created_at: 'created_at',
+  status: 'status',
   accountable_id: 'accountable_id',
   company_id: 'company_id'
 } as const
@@ -868,6 +869,34 @@ export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'Role[]'
  */
 export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStatus'
+ */
+export type EnumWarehouseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'WarehouseStatus[]'
+ */
+export type ListEnumWarehouseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WarehouseStatus[]'>
     
 
 

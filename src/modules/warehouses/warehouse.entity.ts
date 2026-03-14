@@ -1,5 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql'
-import { Warehouse as PrismaWarehouse } from 'generated/prisma/client'
+import { Field, Float, ObjectType, registerEnumType } from '@nestjs/graphql'
+import { Warehouse as PrismaWarehouse, WarehouseStatus } from 'generated/prisma/client'
+import { Company } from '../companies/company.entity'
+
+registerEnumType(WarehouseStatus, {
+  name: 'WarehouseStatus'
+})
 
 @ObjectType()
 export class Warehouse implements PrismaWarehouse {
@@ -25,16 +30,16 @@ export class Warehouse implements PrismaWarehouse {
   state: string
 
   @Field(() => String)
-  category: string
-
-  @Field(() => String)
-  area: string
-
-  @Field(() => String)
-  status: string
-
-  @Field(() => String)
   price: string
+
+  @Field(() => Float)
+  area_total: number
+
+  @Field(() => [String])
+  images: string[]
+
+  @Field(() => WarehouseStatus)
+  status: WarehouseStatus
 
   @Field(() => String)
   address: string
@@ -45,9 +50,15 @@ export class Warehouse implements PrismaWarehouse {
   @Field(() => String)
   country: string
 
+  @Field(() => String, { nullable: true })
+  address_complement: string | null
+
   @Field(() => Date)
   created_at: Date
 
   @Field(() => Date)
   updated_at: Date
+
+  @Field(() => Company, { nullable: true })
+  company?: Company
 }

@@ -20,25 +20,35 @@ export type WarehouseModel = runtime.Types.Result.DefaultSelection<Prisma.$Wareh
 
 export type AggregateWarehouse = {
   _count: WarehouseCountAggregateOutputType | null
+  _avg: WarehouseAvgAggregateOutputType | null
+  _sum: WarehouseSumAggregateOutputType | null
   _min: WarehouseMinAggregateOutputType | null
   _max: WarehouseMaxAggregateOutputType | null
+}
+
+export type WarehouseAvgAggregateOutputType = {
+  area_total: number | null
+}
+
+export type WarehouseSumAggregateOutputType = {
+  area_total: number | null
 }
 
 export type WarehouseMinAggregateOutputType = {
   id: string | null
   title: string | null
+  price: string | null
+  area_total: number | null
   description: string | null
   city: string | null
   state: string | null
-  category: string | null
-  area: string | null
-  status: string | null
-  price: string | null
   address: string | null
-  zip_code: string | null
   country: string | null
+  zip_code: string | null
+  address_complement: string | null
   updated_at: Date | null
   created_at: Date | null
+  status: $Enums.WarehouseStatus | null
   accountable_id: string | null
   company_id: string | null
 }
@@ -46,18 +56,18 @@ export type WarehouseMinAggregateOutputType = {
 export type WarehouseMaxAggregateOutputType = {
   id: string | null
   title: string | null
+  price: string | null
+  area_total: number | null
   description: string | null
   city: string | null
   state: string | null
-  category: string | null
-  area: string | null
-  status: string | null
-  price: string | null
   address: string | null
-  zip_code: string | null
   country: string | null
+  zip_code: string | null
+  address_complement: string | null
   updated_at: Date | null
   created_at: Date | null
+  status: $Enums.WarehouseStatus | null
   accountable_id: string | null
   company_id: string | null
 }
@@ -65,39 +75,48 @@ export type WarehouseMaxAggregateOutputType = {
 export type WarehouseCountAggregateOutputType = {
   id: number
   title: number
+  price: number
+  area_total: number
   description: number
+  images: number
   city: number
   state: number
-  category: number
-  area: number
-  status: number
-  price: number
   address: number
-  zip_code: number
   country: number
+  zip_code: number
+  address_complement: number
   updated_at: number
   created_at: number
+  status: number
   accountable_id: number
   company_id: number
   _all: number
 }
 
 
+export type WarehouseAvgAggregateInputType = {
+  area_total?: true
+}
+
+export type WarehouseSumAggregateInputType = {
+  area_total?: true
+}
+
 export type WarehouseMinAggregateInputType = {
   id?: true
   title?: true
+  price?: true
+  area_total?: true
   description?: true
   city?: true
   state?: true
-  category?: true
-  area?: true
-  status?: true
-  price?: true
   address?: true
-  zip_code?: true
   country?: true
+  zip_code?: true
+  address_complement?: true
   updated_at?: true
   created_at?: true
+  status?: true
   accountable_id?: true
   company_id?: true
 }
@@ -105,18 +124,18 @@ export type WarehouseMinAggregateInputType = {
 export type WarehouseMaxAggregateInputType = {
   id?: true
   title?: true
+  price?: true
+  area_total?: true
   description?: true
   city?: true
   state?: true
-  category?: true
-  area?: true
-  status?: true
-  price?: true
   address?: true
-  zip_code?: true
   country?: true
+  zip_code?: true
+  address_complement?: true
   updated_at?: true
   created_at?: true
+  status?: true
   accountable_id?: true
   company_id?: true
 }
@@ -124,18 +143,19 @@ export type WarehouseMaxAggregateInputType = {
 export type WarehouseCountAggregateInputType = {
   id?: true
   title?: true
+  price?: true
+  area_total?: true
   description?: true
+  images?: true
   city?: true
   state?: true
-  category?: true
-  area?: true
-  status?: true
-  price?: true
   address?: true
-  zip_code?: true
   country?: true
+  zip_code?: true
+  address_complement?: true
   updated_at?: true
   created_at?: true
+  status?: true
   accountable_id?: true
   company_id?: true
   _all?: true
@@ -179,6 +199,18 @@ export type WarehouseAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: WarehouseAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: WarehouseSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: WarehouseMinAggregateInputType
@@ -209,6 +241,8 @@ export type WarehouseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: WarehouseCountAggregateInputType | true
+  _avg?: WarehouseAvgAggregateInputType
+  _sum?: WarehouseSumAggregateInputType
   _min?: WarehouseMinAggregateInputType
   _max?: WarehouseMaxAggregateInputType
 }
@@ -216,21 +250,24 @@ export type WarehouseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type WarehouseGroupByOutputType = {
   id: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images: string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement: string | null
   updated_at: Date
   created_at: Date
+  status: $Enums.WarehouseStatus
   accountable_id: string
   company_id: string
   _count: WarehouseCountAggregateOutputType | null
+  _avg: WarehouseAvgAggregateOutputType | null
+  _sum: WarehouseSumAggregateOutputType | null
   _min: WarehouseMinAggregateOutputType | null
   _max: WarehouseMaxAggregateOutputType | null
 }
@@ -256,18 +293,19 @@ export type WarehouseWhereInput = {
   NOT?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
   id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
+  price?: Prisma.StringFilter<"Warehouse"> | string
+  area_total?: Prisma.FloatFilter<"Warehouse"> | number
   description?: Prisma.StringFilter<"Warehouse"> | string
+  images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
   state?: Prisma.StringFilter<"Warehouse"> | string
-  category?: Prisma.StringFilter<"Warehouse"> | string
-  area?: Prisma.StringFilter<"Warehouse"> | string
-  status?: Prisma.StringFilter<"Warehouse"> | string
-  price?: Prisma.StringFilter<"Warehouse"> | string
   address?: Prisma.StringFilter<"Warehouse"> | string
-  zip_code?: Prisma.StringFilter<"Warehouse"> | string
   country?: Prisma.StringFilter<"Warehouse"> | string
+  zip_code?: Prisma.StringFilter<"Warehouse"> | string
+  address_complement?: Prisma.StringNullableFilter<"Warehouse"> | string | null
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  status?: Prisma.EnumWarehouseStatusFilter<"Warehouse"> | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   company_id?: Prisma.StringFilter<"Warehouse"> | string
   accountable?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -277,18 +315,19 @@ export type WarehouseWhereInput = {
 export type WarehouseOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  area_total?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  category?: Prisma.SortOrder
-  area?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  price?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  zip_code?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  zip_code?: Prisma.SortOrder
+  address_complement?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
   accountable?: Prisma.UserOrderByWithRelationInput
@@ -301,18 +340,19 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.WarehouseWhereInput[]
   NOT?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
   title?: Prisma.StringFilter<"Warehouse"> | string
+  price?: Prisma.StringFilter<"Warehouse"> | string
+  area_total?: Prisma.FloatFilter<"Warehouse"> | number
   description?: Prisma.StringFilter<"Warehouse"> | string
+  images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
   state?: Prisma.StringFilter<"Warehouse"> | string
-  category?: Prisma.StringFilter<"Warehouse"> | string
-  area?: Prisma.StringFilter<"Warehouse"> | string
-  status?: Prisma.StringFilter<"Warehouse"> | string
-  price?: Prisma.StringFilter<"Warehouse"> | string
   address?: Prisma.StringFilter<"Warehouse"> | string
-  zip_code?: Prisma.StringFilter<"Warehouse"> | string
   country?: Prisma.StringFilter<"Warehouse"> | string
+  zip_code?: Prisma.StringFilter<"Warehouse"> | string
+  address_complement?: Prisma.StringNullableFilter<"Warehouse"> | string | null
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  status?: Prisma.EnumWarehouseStatusFilter<"Warehouse"> | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   company_id?: Prisma.StringFilter<"Warehouse"> | string
   accountable?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -322,23 +362,26 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
 export type WarehouseOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  area_total?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  category?: Prisma.SortOrder
-  area?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  price?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  zip_code?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  zip_code?: Prisma.SortOrder
+  address_complement?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
   _count?: Prisma.WarehouseCountOrderByAggregateInput
+  _avg?: Prisma.WarehouseAvgOrderByAggregateInput
   _max?: Prisma.WarehouseMaxOrderByAggregateInput
   _min?: Prisma.WarehouseMinOrderByAggregateInput
+  _sum?: Prisma.WarehouseSumOrderByAggregateInput
 }
 
 export type WarehouseScalarWhereWithAggregatesInput = {
@@ -347,18 +390,19 @@ export type WarehouseScalarWhereWithAggregatesInput = {
   NOT?: Prisma.WarehouseScalarWhereWithAggregatesInput | Prisma.WarehouseScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   title?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
+  price?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
+  area_total?: Prisma.FloatWithAggregatesFilter<"Warehouse"> | number
   description?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
+  images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   state?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  category?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  area?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  price?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   address?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  zip_code?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   country?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
+  zip_code?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
+  address_complement?: Prisma.StringNullableWithAggregatesFilter<"Warehouse"> | string | null
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Warehouse"> | Date | string
+  status?: Prisma.EnumWarehouseStatusWithAggregatesFilter<"Warehouse"> | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   company_id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
 }
@@ -366,18 +410,19 @@ export type WarehouseScalarWhereWithAggregatesInput = {
 export type WarehouseCreateInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable: Prisma.UserCreateNestedOneWithoutWarehousesInput
   company: Prisma.CompanyCreateNestedOneWithoutWarehousesInput
 }
@@ -385,18 +430,19 @@ export type WarehouseCreateInput = {
 export type WarehouseUncheckedCreateInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable_id: string
   company_id: string
 }
@@ -404,18 +450,19 @@ export type WarehouseUncheckedCreateInput = {
 export type WarehouseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable?: Prisma.UserUpdateOneRequiredWithoutWarehousesNestedInput
   company?: Prisma.CompanyUpdateOneRequiredWithoutWarehousesNestedInput
 }
@@ -423,18 +470,19 @@ export type WarehouseUpdateInput = {
 export type WarehouseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -442,18 +490,19 @@ export type WarehouseUncheckedUpdateInput = {
 export type WarehouseCreateManyInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable_id: string
   company_id: string
 }
@@ -461,35 +510,37 @@ export type WarehouseCreateManyInput = {
 export type WarehouseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
 }
 
 export type WarehouseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
@@ -504,40 +555,53 @@ export type WarehouseOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type WarehouseCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  area_total?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  images?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  category?: Prisma.SortOrder
-  area?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  price?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  zip_code?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  zip_code?: Prisma.SortOrder
+  address_complement?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
+}
+
+export type WarehouseAvgOrderByAggregateInput = {
+  area_total?: Prisma.SortOrder
 }
 
 export type WarehouseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  area_total?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  category?: Prisma.SortOrder
-  area?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  price?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  zip_code?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  zip_code?: Prisma.SortOrder
+  address_complement?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
 }
@@ -545,20 +609,24 @@ export type WarehouseMaxOrderByAggregateInput = {
 export type WarehouseMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  price?: Prisma.SortOrder
+  area_total?: Prisma.SortOrder
   description?: Prisma.SortOrder
   city?: Prisma.SortOrder
   state?: Prisma.SortOrder
-  category?: Prisma.SortOrder
-  area?: Prisma.SortOrder
-  status?: Prisma.SortOrder
-  price?: Prisma.SortOrder
   address?: Prisma.SortOrder
-  zip_code?: Prisma.SortOrder
   country?: Prisma.SortOrder
+  zip_code?: Prisma.SortOrder
+  address_complement?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
+}
+
+export type WarehouseSumOrderByAggregateInput = {
+  area_total?: Prisma.SortOrder
 }
 
 export type WarehouseCreateNestedManyWithoutAccountableInput = {
@@ -645,39 +713,62 @@ export type WarehouseUncheckedUpdateManyWithoutCompanyNestedInput = {
   deleteMany?: Prisma.WarehouseScalarWhereInput | Prisma.WarehouseScalarWhereInput[]
 }
 
+export type WarehouseCreateimagesInput = {
+  set: string[]
+}
+
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type WarehouseUpdateimagesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type EnumWarehouseStatusFieldUpdateOperationsInput = {
+  set?: $Enums.WarehouseStatus
+}
+
 export type WarehouseCreateWithoutAccountableInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   company: Prisma.CompanyCreateNestedOneWithoutWarehousesInput
 }
 
 export type WarehouseUncheckedCreateWithoutAccountableInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   company_id: string
 }
 
@@ -713,18 +804,19 @@ export type WarehouseScalarWhereInput = {
   NOT?: Prisma.WarehouseScalarWhereInput | Prisma.WarehouseScalarWhereInput[]
   id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
+  price?: Prisma.StringFilter<"Warehouse"> | string
+  area_total?: Prisma.FloatFilter<"Warehouse"> | number
   description?: Prisma.StringFilter<"Warehouse"> | string
+  images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
   state?: Prisma.StringFilter<"Warehouse"> | string
-  category?: Prisma.StringFilter<"Warehouse"> | string
-  area?: Prisma.StringFilter<"Warehouse"> | string
-  status?: Prisma.StringFilter<"Warehouse"> | string
-  price?: Prisma.StringFilter<"Warehouse"> | string
   address?: Prisma.StringFilter<"Warehouse"> | string
-  zip_code?: Prisma.StringFilter<"Warehouse"> | string
   country?: Prisma.StringFilter<"Warehouse"> | string
+  zip_code?: Prisma.StringFilter<"Warehouse"> | string
+  address_complement?: Prisma.StringNullableFilter<"Warehouse"> | string | null
   updated_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Warehouse"> | Date | string
+  status?: Prisma.EnumWarehouseStatusFilter<"Warehouse"> | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFilter<"Warehouse"> | string
   company_id?: Prisma.StringFilter<"Warehouse"> | string
 }
@@ -732,36 +824,38 @@ export type WarehouseScalarWhereInput = {
 export type WarehouseCreateWithoutCompanyInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable: Prisma.UserCreateNestedOneWithoutWarehousesInput
 }
 
 export type WarehouseUncheckedCreateWithoutCompanyInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable_id: string
 }
 
@@ -794,144 +888,152 @@ export type WarehouseUpdateManyWithWhereWithoutCompanyInput = {
 export type WarehouseCreateManyAccountableInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   company_id: string
 }
 
 export type WarehouseUpdateWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   company?: Prisma.CompanyUpdateOneRequiredWithoutWarehousesNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WarehouseUncheckedUpdateManyWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   company_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WarehouseCreateManyCompanyInput = {
   id?: string
   title: string
+  price: string
+  area_total: number
   description: string
+  images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
   state: string
-  category: string
-  area: string
-  status: string
-  price: string
   address: string
-  zip_code: string
   country: string
+  zip_code: string
+  address_complement?: string | null
   updated_at?: Date | string
   created_at?: Date | string
+  status?: $Enums.WarehouseStatus
   accountable_id: string
 }
 
 export type WarehouseUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable?: Prisma.UserUpdateOneRequiredWithoutWarehousesNestedInput
 }
 
 export type WarehouseUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type WarehouseUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  price?: Prisma.StringFieldUpdateOperationsInput | string
+  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
   state?: Prisma.StringFieldUpdateOperationsInput | string
-  category?: Prisma.StringFieldUpdateOperationsInput | string
-  area?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.StringFieldUpdateOperationsInput | string
   address?: Prisma.StringFieldUpdateOperationsInput | string
-  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
   country?: Prisma.StringFieldUpdateOperationsInput | string
+  zip_code?: Prisma.StringFieldUpdateOperationsInput | string
+  address_complement?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  status?: Prisma.EnumWarehouseStatusFieldUpdateOperationsInput | $Enums.WarehouseStatus
   accountable_id?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
@@ -940,18 +1042,19 @@ export type WarehouseUncheckedUpdateManyWithoutCompanyInput = {
 export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  price?: boolean
+  area_total?: boolean
   description?: boolean
+  images?: boolean
   city?: boolean
   state?: boolean
-  category?: boolean
-  area?: boolean
-  status?: boolean
-  price?: boolean
   address?: boolean
-  zip_code?: boolean
   country?: boolean
+  zip_code?: boolean
+  address_complement?: boolean
   updated_at?: boolean
   created_at?: boolean
+  status?: boolean
   accountable_id?: boolean
   company_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -961,18 +1064,19 @@ export type WarehouseSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type WarehouseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  price?: boolean
+  area_total?: boolean
   description?: boolean
+  images?: boolean
   city?: boolean
   state?: boolean
-  category?: boolean
-  area?: boolean
-  status?: boolean
-  price?: boolean
   address?: boolean
-  zip_code?: boolean
   country?: boolean
+  zip_code?: boolean
+  address_complement?: boolean
   updated_at?: boolean
   created_at?: boolean
+  status?: boolean
   accountable_id?: boolean
   company_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -982,18 +1086,19 @@ export type WarehouseSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   title?: boolean
+  price?: boolean
+  area_total?: boolean
   description?: boolean
+  images?: boolean
   city?: boolean
   state?: boolean
-  category?: boolean
-  area?: boolean
-  status?: boolean
-  price?: boolean
   address?: boolean
-  zip_code?: boolean
   country?: boolean
+  zip_code?: boolean
+  address_complement?: boolean
   updated_at?: boolean
   created_at?: boolean
+  status?: boolean
   accountable_id?: boolean
   company_id?: boolean
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1003,23 +1108,24 @@ export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
 export type WarehouseSelectScalar = {
   id?: boolean
   title?: boolean
+  price?: boolean
+  area_total?: boolean
   description?: boolean
+  images?: boolean
   city?: boolean
   state?: boolean
-  category?: boolean
-  area?: boolean
-  status?: boolean
-  price?: boolean
   address?: boolean
-  zip_code?: boolean
   country?: boolean
+  zip_code?: boolean
+  address_complement?: boolean
   updated_at?: boolean
   created_at?: boolean
+  status?: boolean
   accountable_id?: boolean
   company_id?: boolean
 }
 
-export type WarehouseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "description" | "city" | "state" | "category" | "area" | "status" | "price" | "address" | "zip_code" | "country" | "updated_at" | "created_at" | "accountable_id" | "company_id", ExtArgs["result"]["warehouse"]>
+export type WarehouseOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "title" | "price" | "area_total" | "description" | "images" | "city" | "state" | "address" | "country" | "zip_code" | "address_complement" | "updated_at" | "created_at" | "status" | "accountable_id" | "company_id", ExtArgs["result"]["warehouse"]>
 export type WarehouseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   accountable?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   company?: boolean | Prisma.CompanyDefaultArgs<ExtArgs>
@@ -1042,18 +1148,19 @@ export type $WarehousePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     title: string
+    price: string
+    area_total: number
     description: string
+    images: string[]
     city: string
     state: string
-    category: string
-    area: string
-    status: string
-    price: string
     address: string
-    zip_code: string
     country: string
+    zip_code: string
+    address_complement: string | null
     updated_at: Date
     created_at: Date
+    status: $Enums.WarehouseStatus
     accountable_id: string
     company_id: string
   }, ExtArgs["result"]["warehouse"]>
@@ -1483,18 +1590,19 @@ export interface Prisma__WarehouseClient<T, Null = never, ExtArgs extends runtim
 export interface WarehouseFieldRefs {
   readonly id: Prisma.FieldRef<"Warehouse", 'String'>
   readonly title: Prisma.FieldRef<"Warehouse", 'String'>
+  readonly price: Prisma.FieldRef<"Warehouse", 'String'>
+  readonly area_total: Prisma.FieldRef<"Warehouse", 'Float'>
   readonly description: Prisma.FieldRef<"Warehouse", 'String'>
+  readonly images: Prisma.FieldRef<"Warehouse", 'String[]'>
   readonly city: Prisma.FieldRef<"Warehouse", 'String'>
   readonly state: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly category: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly area: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly status: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly price: Prisma.FieldRef<"Warehouse", 'String'>
   readonly address: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly zip_code: Prisma.FieldRef<"Warehouse", 'String'>
   readonly country: Prisma.FieldRef<"Warehouse", 'String'>
+  readonly zip_code: Prisma.FieldRef<"Warehouse", 'String'>
+  readonly address_complement: Prisma.FieldRef<"Warehouse", 'String'>
   readonly updated_at: Prisma.FieldRef<"Warehouse", 'DateTime'>
   readonly created_at: Prisma.FieldRef<"Warehouse", 'DateTime'>
+  readonly status: Prisma.FieldRef<"Warehouse", 'WarehouseStatus'>
   readonly accountable_id: Prisma.FieldRef<"Warehouse", 'String'>
   readonly company_id: Prisma.FieldRef<"Warehouse", 'String'>
 }

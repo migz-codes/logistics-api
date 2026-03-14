@@ -1,5 +1,5 @@
-import { Field, InputType, Int, OmitType, PartialType } from '@nestjs/graphql'
-import { Warehouse } from './warehouse.entity'
+import { Field, Float, InputType, Int } from '@nestjs/graphql'
+import { WarehouseStatus } from 'generated/prisma/client'
 
 @InputType()
 export class WarehouseFiltersInput {
@@ -9,11 +9,8 @@ export class WarehouseFiltersInput {
   @Field(() => String, { nullable: true })
   region?: string
 
-  @Field(() => String, { nullable: true })
-  category?: string
-
-  @Field(() => String, { nullable: true })
-  status?: string
+  @Field(() => WarehouseStatus, { nullable: true })
+  status?: WarehouseStatus
 
   @Field(() => Int, { nullable: true })
   skip?: number
@@ -23,7 +20,7 @@ export class WarehouseFiltersInput {
 }
 
 @InputType()
-export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at', 'updated_at']) {
+export class CreateWarehouseInput {
   @Field(() => String)
   title: string
 
@@ -37,16 +34,16 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
   state: string
 
   @Field(() => String)
-  category: string
-
-  @Field(() => String)
-  area: string
-
-  @Field(() => String)
-  status: string
-
-  @Field(() => String)
   price: string
+
+  @Field(() => Float)
+  area_total: number
+
+  @Field(() => [String], { nullable: true, defaultValue: [] })
+  images: string[]
+
+  @Field(() => WarehouseStatus, { nullable: true, defaultValue: WarehouseStatus.AVAILABLE })
+  status: WarehouseStatus
 
   @Field(() => String)
   address: string
@@ -57,6 +54,9 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
   @Field(() => String)
   country: string
 
+  @Field(() => String, { nullable: true })
+  address_complement?: string
+
   @Field(() => String, { nullable: true, defaultValue: '' })
   accountable_id: string
 
@@ -65,7 +65,43 @@ export class CreateWarehouseInput extends OmitType(Warehouse, ['id', 'created_at
 }
 
 @InputType()
-export class UpdateWarehouseInput extends PartialType(Warehouse) {
+export class UpdateWarehouseInput {
   @Field(() => String)
   id: string
+
+  @Field(() => String, { nullable: true })
+  title?: string
+
+  @Field(() => String, { nullable: true })
+  description?: string
+
+  @Field(() => String, { nullable: true })
+  city?: string
+
+  @Field(() => String, { nullable: true })
+  state?: string
+
+  @Field(() => String, { nullable: true })
+  price?: string
+
+  @Field(() => Float, { nullable: true })
+  area_total?: number
+
+  @Field(() => [String], { nullable: true })
+  images?: string[]
+
+  @Field(() => WarehouseStatus, { nullable: true })
+  status?: WarehouseStatus
+
+  @Field(() => String, { nullable: true })
+  address?: string
+
+  @Field(() => String, { nullable: true })
+  zip_code?: string
+
+  @Field(() => String, { nullable: true })
+  country?: string
+
+  @Field(() => String, { nullable: true })
+  address_complement?: string
 }

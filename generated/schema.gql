@@ -49,15 +49,22 @@ type Warehouse {
   description: String!
   city: String!
   state: String!
-  category: String!
-  area: String!
-  status: String!
   price: String!
+  area_total: Float!
+  images: [String!]!
+  status: WarehouseStatus!
   address: String!
   zip_code: String!
   country: String!
+  address_complement: String
   created_at: DateTime!
   updated_at: DateTime!
+  company: Company
+}
+
+enum WarehouseStatus {
+  AVAILABLE
+  UNAVAILABLE
 }
 
 type Query {
@@ -67,6 +74,7 @@ type Query {
   warehouses(filters: WarehouseFiltersInput): [Warehouse!]
   warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
+  myWarehouses(filters: WarehouseFiltersInput): [Warehouse!]
   getMyCompanies: [Company!]
   companies(filters: CompanyFiltersInput): [Company!]
   companiesCount(filters: CompanyFiltersInput): Int!
@@ -76,8 +84,7 @@ type Query {
 input WarehouseFiltersInput {
   search: String
   region: String
-  category: String
-  status: String
+  status: WarehouseStatus
   skip: Int
   take: Int
 }
@@ -101,6 +108,8 @@ type Mutation {
   createWarehouse(input: CreateWarehouseInput!): Warehouse
   updateWarehouse(input: UpdateWarehouseInput!): Warehouse
   removeWarehouse(id: String!): Warehouse
+  addWarehouseImages(id: String!, imageUrls: [String!]!): Warehouse
+  removeWarehouseImage(id: String!, imageUrl: String!): Warehouse
   createCompany(input: CreateCompanyInput!): Company
   updateCompany(input: UpdateCompanyInput!): Company
   removeCompany(id: String!): Company
@@ -139,19 +148,32 @@ input CreateWarehouseInput {
   description: String!
   city: String!
   state: String!
-  category: String!
-  area: String!
-  status: String!
   price: String!
+  area_total: Float!
+  images: [String!] = []
+  status: WarehouseStatus = AVAILABLE
   address: String!
   zip_code: String!
   country: String!
+  address_complement: String
   accountable_id: String = ""
   company_id: String!
 }
 
 input UpdateWarehouseInput {
   id: String!
+  title: String
+  description: String
+  city: String
+  state: String
+  price: String
+  area_total: Float
+  images: [String!]
+  status: WarehouseStatus
+  address: String
+  zip_code: String
+  country: String
+  address_complement: String
 }
 
 input CreateCompanyInput {
