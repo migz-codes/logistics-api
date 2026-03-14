@@ -11,8 +11,8 @@ export interface JwtPayload {
 }
 
 export const TOKEN_EXPIRY = {
-  ACCESS: '30s',
-  REFRESH: '7d'
+  ACCESS: process.env.JWT_ACCESS_EXPIRY || '5m',
+  REFRESH: process.env.JWT_REFRESH_EXPIRY || '14d'
 } as const
 
 @Injectable()
