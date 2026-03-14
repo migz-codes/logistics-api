@@ -10,6 +10,7 @@ import { PrismaService } from './lib/prisma/prisma.service'
 import { AuthModule } from './modules/auth/auth.module'
 import { CompaniesModule } from './modules/companies/companies.module'
 import { RolesModule } from './modules/roles/roles.module'
+import { StorageModule } from './modules/storage/storage.module'
 import { UserModule } from './modules/users/users.module'
 import { UserResolver } from './modules/users/users.resolver'
 import { UserService } from './modules/users/users.service'
@@ -26,6 +27,7 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module'
     RolesModule,
     PrismaModule,
     GraphqlModule,
+    StorageModule,
     WarehousesModule,
     CompaniesModule
   ],
