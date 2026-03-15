@@ -86,7 +86,7 @@ export class WarehousesService {
         price: input.price,
         area_total: input.area_total,
         description: input.description,
-        images: input.images,
+        images: input.images || [],
         status: input.status,
         city: input.city,
         state: input.state,
@@ -157,7 +157,8 @@ export class WarehousesService {
 
   async findOne(id: string) {
     const warehouse = await this.prismaService.warehouse.findUnique({
-      where: { id }
+      where: { id },
+      include: { company: true }
     })
 
     return warehouse
@@ -174,10 +175,20 @@ export class WarehousesService {
   }
 
   async addImages(id: string, imageUrls: string[]) {
+    // First get current images, then set the combined array
+    // Using direct assignment due to Prisma Accelerate compatibility
+    const current = await this.prismaService.warehouse.findUnique({
+      where: { id },
+      select: { images: true }
+    })
+
+    const currentImages = current?.images || []
+    const newImages = [...currentImages, ...imageUrls]
+
     const warehouse = await this.prismaService.warehouse.update({
       where: { id },
       data: {
-        images: { push: imageUrls }
+        images: newImages
       }
     })
 

@@ -10,7 +10,7 @@ export class Company implements PrismaCompany {
   name: string
 
   @Field(() => String, { nullable: true })
-  logo: string
+  logo: string | null
 
   @Field(() => String)
   owner_id: string

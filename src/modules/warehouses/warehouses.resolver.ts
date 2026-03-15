@@ -52,6 +52,7 @@ export class WarehousesResolver {
     try {
       return await this.warehousesService.findAll(filters)
     } catch (error) {
+      console.error('Failed to fetch warehouses:', error)
       throwGraphQLError({
         message: 'Failed to fetch warehouses',
         code: 'WAREHOUSES_FETCH_FAILED',
