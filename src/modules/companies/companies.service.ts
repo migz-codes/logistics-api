@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
-import { CompanyFiltersInput, CreateCompanyInput, UpdateCompanyInput } from './dtos'
+import {
+  CompanyFiltersInput,
+  CreateCompanyInput,
+  PaginatedCompaniesResponse,
+  PaginationInput,
+  UpdateCompanyInput
+} from './dtos'
 
 @Injectable()
 export class CompaniesService {
@@ -25,6 +31,38 @@ export class CompaniesService {
     })
 
     return companies
+  }
+
+  async findByOwnerPaginated(
+    ownerId: string,
+    pagination: PaginationInput
+  ): Promise<PaginatedCompaniesResponse> {
+    const { page, take } = pagination
+    const skip = (page - 1) * take
+
+    const [companies, total] = await Promise.all([
+      this.prismaService.company.findMany({
+        where: { owner_id: ownerId },
+        orderBy: { created_at: 'desc' },
+        skip,
+        take
+      }),
+      this.prismaService.company.count({
+        where: { owner_id: ownerId }
+      })
+    ])
+
+    const total_pages = Math.ceil(total / take)
+
+    return {
+      companies,
+      info: {
+        total,
+        page,
+        take,
+        total_pages
+      }
+    }
   }
 
   async findAll(filters?: CompanyFiltersInput) {

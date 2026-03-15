@@ -8,7 +8,13 @@ import { RolesGuard } from '../roles/roles.guard'
 import { CompaniesService } from './companies.service'
 import { Company } from './company.entity'
 import { CompanyAccess } from './decorators/company-access.decorator'
-import { CompanyFiltersInput, CreateCompanyInput, UpdateCompanyInput } from './dtos'
+import {
+  CompanyFiltersInput,
+  CreateCompanyInput,
+  PaginatedCompaniesResponse,
+  PaginationInput,
+  UpdateCompanyInput
+} from './dtos'
 import { CompanyAccessGuard } from './guards/company-access.guard'
 
 @Resolver(() => Company)
@@ -37,12 +43,16 @@ export class CompaniesResolver {
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('INVESTOR_ADMIN', 'ADMIN')
-  @Query(() => [Company], { name: 'getMyCompanies', nullable: true })
-  async getMyCompanies(@Context('req') req: IAuthenticatedRequest) {
+  @Query(() => PaginatedCompaniesResponse, { name: 'getMyCompanies', nullable: true })
+  async getMyCompanies(
+    @Context('req') req: IAuthenticatedRequest,
+    @Args('pagination', { nullable: true }) pagination?: PaginationInput
+  ) {
     const user_id = req.user.id
+    const paginationParams = pagination ?? { page: 1, take: 10 }
 
     try {
-      return await this.companiesService.findByOwner(user_id)
+      return await this.companiesService.findByOwnerPaginated(user_id, paginationParams)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to fetch companies',
@@ -60,9 +70,9 @@ export class CompaniesResolver {
       return await this.companiesService.findAll(filters)
     } catch (error) {
       throwGraphQLError({
-        message: 'Failed to fetch companies',
+        error,
         code: 'COMPANIES_FETCH_FAILED',
-        error
+        message: 'Failed to fetch companies'
       })
     }
   }

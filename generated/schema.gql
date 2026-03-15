@@ -41,6 +41,18 @@ type Company {
   updated_at: DateTime!
 }
 
+type PaginationInfo {
+  total: Int!
+  page: Int!
+  take: Int!
+  total_pages: Int!
+}
+
+type PaginatedCompaniesResponse {
+  companies: [Company!]!
+  info: PaginationInfo!
+}
+
 type Warehouse {
   id: String!
   accountable_id: String!
@@ -75,7 +87,7 @@ type Query {
   warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
   myWarehouses(filters: WarehouseFiltersInput): [Warehouse!]
-  getMyCompanies: [Company!]
+  getMyCompanies(pagination: PaginationInput): PaginatedCompaniesResponse
   companies(filters: CompanyFiltersInput): [Company!]
   companiesCount(filters: CompanyFiltersInput): Int!
   company(id: String!): Company
@@ -87,6 +99,11 @@ input WarehouseFiltersInput {
   status: WarehouseStatus
   skip: Int
   take: Int
+}
+
+input PaginationInput {
+  page: Int! = 1
+  take: Int! = 10
 }
 
 input CompanyFiltersInput {
