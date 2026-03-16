@@ -1,5 +1,7 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql'
+import { Field, Float, InputType, Int, ObjectType } from '@nestjs/graphql'
 import { WarehouseStatus } from 'generated/prisma/client'
+import { PaginationInfo } from '@/src/common/dtos'
+import { Warehouse } from './warehouse.entity'
 
 @InputType()
 export class WarehouseFiltersInput {
@@ -104,4 +106,13 @@ export class UpdateWarehouseInput {
 
   @Field(() => String, { nullable: true })
   address_complement?: string
+}
+
+@ObjectType()
+export class PaginatedWarehousesResponse {
+  @Field(() => [Warehouse])
+  warehouses: Warehouse[]
+
+  @Field(() => PaginationInfo)
+  info: PaginationInfo
 }

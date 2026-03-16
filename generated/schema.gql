@@ -32,6 +32,13 @@ type LogoutResponse {
   success: Boolean!
 }
 
+type PaginationInfo {
+  total: Int!
+  page: Int!
+  take: Int!
+  total_pages: Int!
+}
+
 type Company {
   id: String!
   name: String!
@@ -39,13 +46,6 @@ type Company {
   owner_id: String!
   created_at: DateTime!
   updated_at: DateTime!
-}
-
-type PaginationInfo {
-  total: Int!
-  page: Int!
-  take: Int!
-  total_pages: Int!
 }
 
 type PaginatedCompaniesResponse {
@@ -79,11 +79,16 @@ enum WarehouseStatus {
   UNAVAILABLE
 }
 
+type PaginatedWarehousesResponse {
+  warehouses: [Warehouse!]!
+  info: PaginationInfo!
+}
+
 type Query {
   getUserById(id: String!): User!
   getAllUsers: [User!]!
   getMe: User!
-  warehouses(filters: WarehouseFiltersInput): [Warehouse!]
+  warehouses(filters: WarehouseFiltersInput, pagination: PaginationInput): PaginatedWarehousesResponse
   warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
   myWarehouses(filters: WarehouseFiltersInput): [Warehouse!]

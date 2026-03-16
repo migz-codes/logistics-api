@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
+import { PaginationInput } from '@/src/common/dtos'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
@@ -12,7 +13,6 @@ import {
   CompanyFiltersInput,
   CreateCompanyInput,
   PaginatedCompaniesResponse,
-  PaginationInput,
   UpdateCompanyInput
 } from './dtos'
 import { CompanyAccessGuard } from './guards/company-access.guard'

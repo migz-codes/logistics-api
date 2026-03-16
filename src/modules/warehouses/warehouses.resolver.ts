@@ -1,12 +1,18 @@
 import { UseGuards } from '@nestjs/common'
 import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { Role } from 'generated/prisma/client'
+import { PaginationInput } from '@/src/common/dtos'
 import { throwGraphQLError } from '@/src/lib/utils/graphql-error.util'
 import { AuthGuard } from '../auth/auth.guard'
 import { IAuthenticatedRequest } from '../auth/dtos'
 import { Roles } from '../roles/roles.decorator'
 import { RolesGuard } from '../roles/roles.guard'
-import { CreateWarehouseInput, UpdateWarehouseInput, WarehouseFiltersInput } from './dtos'
+import {
+  CreateWarehouseInput,
+  PaginatedWarehousesResponse,
+  UpdateWarehouseInput,
+  WarehouseFiltersInput
+} from './dtos'
 import { WarehouseAccessGuard } from './guards/warehouse-access.guard'
 import { Warehouse } from './warehouse.entity'
 import { WarehousesService } from './warehouses.service'
@@ -47,10 +53,15 @@ export class WarehousesResolver {
     }
   }
 
-  @Query(() => [Warehouse], { name: 'warehouses', nullable: true })
-  async findAll(@Args('filters', { nullable: true }) filters?: WarehouseFiltersInput) {
+  @Query(() => PaginatedWarehousesResponse, { name: 'warehouses', nullable: true })
+  async findAll(
+    @Args('filters', { nullable: true }) filters?: WarehouseFiltersInput,
+    @Args('pagination', { nullable: true }) pagination?: PaginationInput
+  ) {
+    const paginationParams = pagination ?? { page: 1, take: 10 }
+
     try {
-      return await this.warehousesService.findAll(filters)
+      return await this.warehousesService.findAllPaginated(filters, paginationParams)
     } catch (error) {
       console.error('Failed to fetch warehouses:', error)
       throwGraphQLError({

@@ -1,6 +1,12 @@
 import { Injectable } from '@nestjs/common'
+import { PaginationInput } from '@/src/common/dtos'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
-import { CreateWarehouseInput, UpdateWarehouseInput, WarehouseFiltersInput } from './dtos'
+import {
+  CreateWarehouseInput,
+  PaginatedWarehousesResponse,
+  UpdateWarehouseInput,
+  WarehouseFiltersInput
+} from './dtos'
 
 @Injectable()
 export class WarehousesService {
@@ -124,12 +130,69 @@ export class WarehousesService {
 
     const warehouses = await this.prismaService.warehouse.findMany({
       where,
+      include: {
+        company: true
+      },
       skip: filters?.skip,
       take: filters?.take,
       orderBy: { created_at: 'desc' }
     })
 
     return warehouses
+  }
+
+  async findAllPaginated(
+    filters?: WarehouseFiltersInput,
+    pagination?: PaginationInput
+  ): Promise<PaginatedWarehousesResponse> {
+    const { page, take } = pagination ?? { page: 1, take: 10 }
+    const skip = (page - 1) * take
+
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { address: { contains: filters.search, mode: 'insensitive' } },
+        { city: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    if (filters?.region) {
+      where.state = filters.region
+    }
+
+    if (filters?.status) {
+      where.status = filters.status
+    }
+
+    const [warehouses, total] = await Promise.all([
+      this.prismaService.warehouse.findMany({
+        where,
+        include: {
+          company: true
+        },
+        skip,
+        take,
+        orderBy: { created_at: 'desc' }
+      }),
+      this.prismaService.warehouse.count({
+        where
+      })
+    ])
+
+    const total_pages = Math.ceil(total / take)
+
+    return {
+      warehouses,
+      info: {
+        total,
+        page,
+        take,
+        total_pages
+      }
+    }
   }
 
   async count(filters?: WarehouseFiltersInput) {

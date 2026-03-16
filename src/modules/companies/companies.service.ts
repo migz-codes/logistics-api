@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
+import { PaginationInput } from '@/src/common/dtos'
 import { PrismaService } from '@/src/lib/prisma/prisma.service'
 import {
   CompanyFiltersInput,
   CreateCompanyInput,
   PaginatedCompaniesResponse,
-  PaginationInput,
   UpdateCompanyInput
 } from './dtos'
 

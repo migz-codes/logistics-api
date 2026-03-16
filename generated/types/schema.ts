@@ -200,6 +200,12 @@ export type PaginatedCompaniesResponse = {
   info: PaginationInfo;
 };
 
+export type PaginatedWarehousesResponse = {
+  __typename?: 'PaginatedWarehousesResponse';
+  info: PaginationInfo;
+  warehouses: Array<Warehouse>;
+};
+
 export type PaginationInfo = {
   __typename?: 'PaginationInfo';
   page: Scalars['Int']['output'];
@@ -224,7 +230,7 @@ export type Query = {
   getUserById: User;
   myWarehouses?: Maybe<Array<Warehouse>>;
   warehouse?: Maybe<Warehouse>;
-  warehouses?: Maybe<Array<Warehouse>>;
+  warehouses?: Maybe<PaginatedWarehousesResponse>;
   warehousesCount: Scalars['Int']['output'];
 };
 
@@ -266,6 +272,7 @@ export type QueryWarehouseArgs = {
 
 export type QueryWarehousesArgs = {
   filters?: InputMaybe<WarehouseFiltersInput>;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 
