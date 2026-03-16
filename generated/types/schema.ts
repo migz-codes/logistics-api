@@ -53,15 +53,16 @@ export type CreateUserInput = {
 export type CreateWarehouseInput = {
   accountable_id?: InputMaybe<Scalars['String']['input']>;
   address: Scalars['String']['input'];
-  area: Scalars['String']['input'];
-  category: Scalars['String']['input'];
+  address_complement?: InputMaybe<Scalars['String']['input']>;
+  area_total: Scalars['Float']['input'];
   city: Scalars['String']['input'];
   company_id: Scalars['String']['input'];
   country: Scalars['String']['input'];
   description: Scalars['String']['input'];
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
   price: Scalars['String']['input'];
   state: Scalars['String']['input'];
-  status: Scalars['String']['input'];
+  status?: InputMaybe<WarehouseStatus>;
   title: Scalars['String']['input'];
   zip_code: Scalars['String']['input'];
 };
@@ -79,6 +80,7 @@ export type LogoutResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   addCompanyMember?: Maybe<Company>;
+  addWarehouseImages?: Maybe<Warehouse>;
   createCompany?: Maybe<Company>;
   createUser: User;
   createWarehouse?: Maybe<Warehouse>;
@@ -90,6 +92,7 @@ export type Mutation = {
   removeCompany?: Maybe<Company>;
   removeCompanyMember?: Maybe<Company>;
   removeWarehouse?: Maybe<Warehouse>;
+  removeWarehouseImage?: Maybe<Warehouse>;
   updateCompany?: Maybe<Company>;
   updatePassword: User;
   updateProfile: User;
@@ -101,6 +104,12 @@ export type Mutation = {
 export type MutationAddCompanyMemberArgs = {
   company_id: Scalars['String']['input'];
   user_id: Scalars['String']['input'];
+};
+
+
+export type MutationAddWarehouseImagesArgs = {
+  id: Scalars['String']['input'];
+  imageUrls: Array<Scalars['String']['input']>;
 };
 
 
@@ -155,6 +164,12 @@ export type MutationRemoveWarehouseArgs = {
 };
 
 
+export type MutationRemoveWarehouseImageArgs = {
+  id: Scalars['String']['input'];
+  imageUrl: Scalars['String']['input'];
+};
+
+
 export type MutationUpdateCompanyArgs = {
   input: UpdateCompanyInput;
 };
@@ -179,6 +194,25 @@ export type MutationUpdateWarehouseArgs = {
   input: UpdateWarehouseInput;
 };
 
+export type PaginatedCompaniesResponse = {
+  __typename?: 'PaginatedCompaniesResponse';
+  companies: Array<Company>;
+  info: PaginationInfo;
+};
+
+export type PaginationInfo = {
+  __typename?: 'PaginationInfo';
+  page: Scalars['Int']['output'];
+  take: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  total_pages: Scalars['Int']['output'];
+};
+
+export type PaginationInput = {
+  page?: Scalars['Int']['input'];
+  take?: Scalars['Int']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   companies?: Maybe<Array<Company>>;
@@ -186,8 +220,9 @@ export type Query = {
   company?: Maybe<Company>;
   getAllUsers: Array<User>;
   getMe: User;
-  getMyCompanies?: Maybe<Array<Company>>;
+  getMyCompanies?: Maybe<PaginatedCompaniesResponse>;
   getUserById: User;
+  myWarehouses?: Maybe<Array<Warehouse>>;
   warehouse?: Maybe<Warehouse>;
   warehouses?: Maybe<Array<Warehouse>>;
   warehousesCount: Scalars['Int']['output'];
@@ -209,8 +244,18 @@ export type QueryCompanyArgs = {
 };
 
 
+export type QueryGetMyCompaniesArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+};
+
+
 export type QueryGetUserByIdArgs = {
   id: Scalars['String']['input'];
+};
+
+
+export type QueryMyWarehousesArgs = {
+  filters?: InputMaybe<WarehouseFiltersInput>;
 };
 
 
@@ -256,7 +301,19 @@ export type UpdateUserRoleInput = {
 };
 
 export type UpdateWarehouseInput = {
+  address?: InputMaybe<Scalars['String']['input']>;
+  address_complement?: InputMaybe<Scalars['String']['input']>;
+  area_total?: InputMaybe<Scalars['Float']['input']>;
+  city?: InputMaybe<Scalars['String']['input']>;
+  country?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   id: Scalars['String']['input'];
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
+  price?: InputMaybe<Scalars['String']['input']>;
+  state?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<WarehouseStatus>;
+  title?: InputMaybe<Scalars['String']['input']>;
+  zip_code?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
@@ -273,27 +330,33 @@ export type Warehouse = {
   __typename?: 'Warehouse';
   accountable_id: Scalars['String']['output'];
   address: Scalars['String']['output'];
-  area: Scalars['String']['output'];
-  category: Scalars['String']['output'];
+  address_complement?: Maybe<Scalars['String']['output']>;
+  area_total: Scalars['Float']['output'];
   city: Scalars['String']['output'];
+  company?: Maybe<Company>;
   company_id: Scalars['String']['output'];
   country: Scalars['String']['output'];
   created_at: Scalars['DateTime']['output'];
   description: Scalars['String']['output'];
   id: Scalars['String']['output'];
+  images: Array<Scalars['String']['output']>;
   price: Scalars['String']['output'];
   state: Scalars['String']['output'];
-  status: Scalars['String']['output'];
+  status: WarehouseStatus;
   title: Scalars['String']['output'];
   updated_at: Scalars['DateTime']['output'];
   zip_code: Scalars['String']['output'];
 };
 
 export type WarehouseFiltersInput = {
-  category?: InputMaybe<Scalars['String']['input']>;
   region?: InputMaybe<Scalars['String']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<WarehouseStatus>;
   take?: InputMaybe<Scalars['Int']['input']>;
 };
+
+export enum WarehouseStatus {
+  Available = 'AVAILABLE',
+  Unavailable = 'UNAVAILABLE'
+}
