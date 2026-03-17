@@ -85,6 +85,87 @@ export class WarehousesService {
     return warehouses
   }
 
+  async findByUserCompaniesPaginated(
+    userId: string,
+    filters?: WarehouseFiltersInput,
+    pagination?: PaginationInput
+  ): Promise<PaginatedWarehousesResponse> {
+    const { page, take } = pagination ?? { page: 1, take: 10 }
+    const skip = (page - 1) * take
+
+    const user = await this.prismaService.user.findUnique({
+      where: { id: userId },
+      select: {
+        companies: { select: { id: true } },
+        member_of: { select: { id: true } }
+      }
+    })
+
+    if (!user) {
+      return {
+        warehouses: [],
+        info: {
+          total: 0,
+          page,
+          take,
+          total_pages: 0
+        }
+      }
+    }
+
+    const ownedCompanyIds = user.companies.map((c) => c.id)
+    const memberCompanyIds = user.member_of.map((c) => c.id)
+    const allCompanyIds = [...new Set([...ownedCompanyIds, ...memberCompanyIds])]
+
+    const where: Record<string, unknown> = {
+      company_id: { in: allCompanyIds }
+    }
+
+    if (filters?.search) {
+      where.OR = [
+        { title: { contains: filters.search, mode: 'insensitive' } },
+        { address: { contains: filters.search, mode: 'insensitive' } },
+        { city: { contains: filters.search, mode: 'insensitive' } },
+        { description: { contains: filters.search, mode: 'insensitive' } }
+      ]
+    }
+
+    if (filters?.region) {
+      where.state = filters.region
+    }
+
+    if (filters?.status) {
+      where.status = filters.status
+    }
+
+    const [warehouses, total] = await Promise.all([
+      this.prismaService.warehouse.findMany({
+        where,
+        include: {
+          company: true
+        },
+        skip,
+        take,
+        orderBy: { created_at: 'desc' }
+      }),
+      this.prismaService.warehouse.count({
+        where
+      })
+    ])
+
+    const total_pages = Math.ceil(total / take)
+
+    return {
+      warehouses,
+      info: {
+        total,
+        page,
+        take,
+        total_pages
+      }
+    }
+  }
+
   async create(input: CreateWarehouseInput) {
     const warehouse = await this.prismaService.warehouse.create({
       data: {

@@ -91,7 +91,7 @@ type Query {
   warehouses(filters: WarehouseFiltersInput, pagination: PaginationInput): PaginatedWarehousesResponse
   warehousesCount(filters: WarehouseFiltersInput): Int!
   warehouse(id: String!): Warehouse
-  myWarehouses(filters: WarehouseFiltersInput): [Warehouse!]
+  myWarehouses(filters: WarehouseFiltersInput, pagination: PaginationInput): PaginatedWarehousesResponse
   getMyCompanies(pagination: PaginationInput): PaginatedCompaniesResponse
   companies(filters: CompanyFiltersInput): [Company!]
   companiesCount(filters: CompanyFiltersInput): Int!

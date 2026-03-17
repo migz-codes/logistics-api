@@ -228,7 +228,7 @@ export type Query = {
   getMe: User;
   getMyCompanies?: Maybe<PaginatedCompaniesResponse>;
   getUserById: User;
-  myWarehouses?: Maybe<Array<Warehouse>>;
+  myWarehouses?: Maybe<PaginatedWarehousesResponse>;
   warehouse?: Maybe<Warehouse>;
   warehouses?: Maybe<PaginatedWarehousesResponse>;
   warehousesCount: Scalars['Int']['output'];
@@ -262,6 +262,7 @@ export type QueryGetUserByIdArgs = {
 
 export type QueryMyWarehousesArgs = {
   filters?: InputMaybe<WarehouseFiltersInput>;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 

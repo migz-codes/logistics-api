@@ -167,13 +167,20 @@ export class WarehousesResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(() => [Warehouse], { name: 'myWarehouses', nullable: true })
+  @Query(() => PaginatedWarehousesResponse, { name: 'myWarehouses', nullable: true })
   async getMyProperties(
     @Context() ctx: { req: IAuthenticatedRequest },
-    @Args('filters', { nullable: true }) filters?: WarehouseFiltersInput
+    @Args('filters', { nullable: true }) filters?: WarehouseFiltersInput,
+    @Args('pagination', { nullable: true }) pagination?: PaginationInput
   ) {
+    const paginationParams = pagination ?? { page: 1, take: 10 }
+
     try {
-      return await this.warehousesService.findByUserCompanies(ctx.req.user.id, filters)
+      return await this.warehousesService.findByUserCompaniesPaginated(
+        ctx.req.user.id,
+        filters,
+        paginationParams
+      )
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to fetch your warehouses',
