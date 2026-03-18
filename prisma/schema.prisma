@@ -60,7 +60,7 @@ model Warehouse {
   id                  String   @id @default(uuid())
   title               String
   price               String
-  area_total          Float
+  area_total          String
   description         String
   images              String[]
   city                String

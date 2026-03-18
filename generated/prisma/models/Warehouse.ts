@@ -20,25 +20,15 @@ export type WarehouseModel = runtime.Types.Result.DefaultSelection<Prisma.$Wareh
 
 export type AggregateWarehouse = {
   _count: WarehouseCountAggregateOutputType | null
-  _avg: WarehouseAvgAggregateOutputType | null
-  _sum: WarehouseSumAggregateOutputType | null
   _min: WarehouseMinAggregateOutputType | null
   _max: WarehouseMaxAggregateOutputType | null
-}
-
-export type WarehouseAvgAggregateOutputType = {
-  area_total: number | null
-}
-
-export type WarehouseSumAggregateOutputType = {
-  area_total: number | null
 }
 
 export type WarehouseMinAggregateOutputType = {
   id: string | null
   title: string | null
   price: string | null
-  area_total: number | null
+  area_total: string | null
   description: string | null
   city: string | null
   state: string | null
@@ -57,7 +47,7 @@ export type WarehouseMaxAggregateOutputType = {
   id: string | null
   title: string | null
   price: string | null
-  area_total: number | null
+  area_total: string | null
   description: string | null
   city: string | null
   state: string | null
@@ -93,14 +83,6 @@ export type WarehouseCountAggregateOutputType = {
   _all: number
 }
 
-
-export type WarehouseAvgAggregateInputType = {
-  area_total?: true
-}
-
-export type WarehouseSumAggregateInputType = {
-  area_total?: true
-}
 
 export type WarehouseMinAggregateInputType = {
   id?: true
@@ -199,18 +181,6 @@ export type WarehouseAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: WarehouseAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: WarehouseSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: WarehouseMinAggregateInputType
@@ -241,8 +211,6 @@ export type WarehouseGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: WarehouseCountAggregateInputType | true
-  _avg?: WarehouseAvgAggregateInputType
-  _sum?: WarehouseSumAggregateInputType
   _min?: WarehouseMinAggregateInputType
   _max?: WarehouseMaxAggregateInputType
 }
@@ -251,7 +219,7 @@ export type WarehouseGroupByOutputType = {
   id: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images: string[]
   city: string
@@ -266,8 +234,6 @@ export type WarehouseGroupByOutputType = {
   accountable_id: string
   company_id: string
   _count: WarehouseCountAggregateOutputType | null
-  _avg: WarehouseAvgAggregateOutputType | null
-  _sum: WarehouseSumAggregateOutputType | null
   _min: WarehouseMinAggregateOutputType | null
   _max: WarehouseMaxAggregateOutputType | null
 }
@@ -294,7 +260,7 @@ export type WarehouseWhereInput = {
   id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
   price?: Prisma.StringFilter<"Warehouse"> | string
-  area_total?: Prisma.FloatFilter<"Warehouse"> | number
+  area_total?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -341,7 +307,7 @@ export type WarehouseWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.WarehouseWhereInput | Prisma.WarehouseWhereInput[]
   title?: Prisma.StringFilter<"Warehouse"> | string
   price?: Prisma.StringFilter<"Warehouse"> | string
-  area_total?: Prisma.FloatFilter<"Warehouse"> | number
+  area_total?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -378,10 +344,8 @@ export type WarehouseOrderByWithAggregationInput = {
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
   _count?: Prisma.WarehouseCountOrderByAggregateInput
-  _avg?: Prisma.WarehouseAvgOrderByAggregateInput
   _max?: Prisma.WarehouseMaxOrderByAggregateInput
   _min?: Prisma.WarehouseMinOrderByAggregateInput
-  _sum?: Prisma.WarehouseSumOrderByAggregateInput
 }
 
 export type WarehouseScalarWhereWithAggregatesInput = {
@@ -391,7 +355,7 @@ export type WarehouseScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   title?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   price?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
-  area_total?: Prisma.FloatWithAggregatesFilter<"Warehouse"> | number
+  area_total?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   description?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
   images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringWithAggregatesFilter<"Warehouse"> | string
@@ -411,7 +375,7 @@ export type WarehouseCreateInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -431,7 +395,7 @@ export type WarehouseUncheckedCreateInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -451,7 +415,7 @@ export type WarehouseUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -471,7 +435,7 @@ export type WarehouseUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -491,7 +455,7 @@ export type WarehouseCreateManyInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -511,7 +475,7 @@ export type WarehouseUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -529,7 +493,7 @@ export type WarehouseUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -583,10 +547,6 @@ export type WarehouseCountOrderByAggregateInput = {
   company_id?: Prisma.SortOrder
 }
 
-export type WarehouseAvgOrderByAggregateInput = {
-  area_total?: Prisma.SortOrder
-}
-
 export type WarehouseMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -623,10 +583,6 @@ export type WarehouseMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   accountable_id?: Prisma.SortOrder
   company_id?: Prisma.SortOrder
-}
-
-export type WarehouseSumOrderByAggregateInput = {
-  area_total?: Prisma.SortOrder
 }
 
 export type WarehouseCreateNestedManyWithoutAccountableInput = {
@@ -717,14 +673,6 @@ export type WarehouseCreateimagesInput = {
   set: string[]
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type WarehouseUpdateimagesInput = {
   set?: string[]
   push?: string | string[]
@@ -738,7 +686,7 @@ export type WarehouseCreateWithoutAccountableInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -757,7 +705,7 @@ export type WarehouseUncheckedCreateWithoutAccountableInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -805,7 +753,7 @@ export type WarehouseScalarWhereInput = {
   id?: Prisma.StringFilter<"Warehouse"> | string
   title?: Prisma.StringFilter<"Warehouse"> | string
   price?: Prisma.StringFilter<"Warehouse"> | string
-  area_total?: Prisma.FloatFilter<"Warehouse"> | number
+  area_total?: Prisma.StringFilter<"Warehouse"> | string
   description?: Prisma.StringFilter<"Warehouse"> | string
   images?: Prisma.StringNullableListFilter<"Warehouse">
   city?: Prisma.StringFilter<"Warehouse"> | string
@@ -825,7 +773,7 @@ export type WarehouseCreateWithoutCompanyInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -844,7 +792,7 @@ export type WarehouseUncheckedCreateWithoutCompanyInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -889,7 +837,7 @@ export type WarehouseCreateManyAccountableInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -908,7 +856,7 @@ export type WarehouseUpdateWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -927,7 +875,7 @@ export type WarehouseUncheckedUpdateWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -946,7 +894,7 @@ export type WarehouseUncheckedUpdateManyWithoutAccountableInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -965,7 +913,7 @@ export type WarehouseCreateManyCompanyInput = {
   id?: string
   title: string
   price: string
-  area_total: number
+  area_total: string
   description: string
   images?: Prisma.WarehouseCreateimagesInput | string[]
   city: string
@@ -984,7 +932,7 @@ export type WarehouseUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1003,7 +951,7 @@ export type WarehouseUncheckedUpdateWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1022,7 +970,7 @@ export type WarehouseUncheckedUpdateManyWithoutCompanyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   price?: Prisma.StringFieldUpdateOperationsInput | string
-  area_total?: Prisma.FloatFieldUpdateOperationsInput | number
+  area_total?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
   images?: Prisma.WarehouseUpdateimagesInput | string[]
   city?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1149,7 +1097,7 @@ export type $WarehousePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     id: string
     title: string
     price: string
-    area_total: number
+    area_total: string
     description: string
     images: string[]
     city: string
@@ -1591,7 +1539,7 @@ export interface WarehouseFieldRefs {
   readonly id: Prisma.FieldRef<"Warehouse", 'String'>
   readonly title: Prisma.FieldRef<"Warehouse", 'String'>
   readonly price: Prisma.FieldRef<"Warehouse", 'String'>
-  readonly area_total: Prisma.FieldRef<"Warehouse", 'Float'>
+  readonly area_total: Prisma.FieldRef<"Warehouse", 'String'>
   readonly description: Prisma.FieldRef<"Warehouse", 'String'>
   readonly images: Prisma.FieldRef<"Warehouse", 'String[]'>
   readonly city: Prisma.FieldRef<"Warehouse", 'String'>

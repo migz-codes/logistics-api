@@ -1,4 +1,4 @@
-import { Field, Float, InputType, Int, ObjectType } from '@nestjs/graphql'
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql'
 import { WarehouseStatus } from 'generated/prisma/client'
 import { PaginationInfo } from '@/src/common/dtos'
 import { Warehouse } from './warehouse.entity'
@@ -38,8 +38,8 @@ export class CreateWarehouseInput {
   @Field(() => String)
   price: string
 
-  @Field(() => Float)
-  area_total: number
+  @Field(() => String)
+  area_total: string
 
   @Field(() => [String], { nullable: true, defaultValue: [] })
   images: string[]
@@ -86,8 +86,8 @@ export class UpdateWarehouseInput {
   @Field(() => String, { nullable: true })
   price?: string
 
-  @Field(() => Float, { nullable: true })
-  area_total?: number
+  @Field(() => String, { nullable: true })
+  area_total?: string
 
   @Field(() => [String], { nullable: true })
   images?: string[]

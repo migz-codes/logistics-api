@@ -62,7 +62,7 @@ type Warehouse {
   city: String!
   state: String!
   price: String!
-  area_total: Float!
+  area_total: String!
   images: [String!]!
   status: WarehouseStatus!
   address: String!
@@ -171,7 +171,7 @@ input CreateWarehouseInput {
   city: String!
   state: String!
   price: String!
-  area_total: Float!
+  area_total: String!
   images: [String!] = []
   status: WarehouseStatus = AVAILABLE
   address: String!
@@ -189,7 +189,7 @@ input UpdateWarehouseInput {
   city: String
   state: String
   price: String
-  area_total: Float
+  area_total: String
   images: [String!]
   status: WarehouseStatus
   address: String
