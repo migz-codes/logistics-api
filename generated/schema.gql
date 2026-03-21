@@ -2,6 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type PaginationInfo {
+  total: Int!
+  page: Int!
+  take: Int!
+  total_pages: Int!
+}
+
 type User {
   id: String!
   name: String!
@@ -22,6 +29,11 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type PaginatedUsersResponse {
+  users: [User!]!
+  info: PaginationInfo!
+}
+
 type AuthResponse {
   accessToken: String!
   refreshToken: String!
@@ -30,13 +42,6 @@ type AuthResponse {
 
 type LogoutResponse {
   success: Boolean!
-}
-
-type PaginationInfo {
-  total: Int!
-  page: Int!
-  take: Int!
-  total_pages: Int!
 }
 
 type Company {
@@ -86,7 +91,7 @@ type PaginatedWarehousesResponse {
 
 type Query {
   getUserById(id: String!): User!
-  getAllUsers: [User!]!
+  getAllUsers(pagination: PaginationInput, filters: UserFiltersInput): PaginatedUsersResponse!
   getMe: User!
   warehouses(filters: WarehouseFiltersInput, pagination: PaginationInput): PaginatedWarehousesResponse
   warehousesCount(filters: WarehouseFiltersInput): Int!
@@ -98,17 +103,21 @@ type Query {
   company(id: String!): Company
 }
 
+input PaginationInput {
+  page: Int! = 1
+  take: Int! = 10
+}
+
+input UserFiltersInput {
+  search: String
+}
+
 input WarehouseFiltersInput {
   search: String
   region: String
   status: WarehouseStatus
   skip: Int
   take: Int
-}
-
-input PaginationInput {
-  page: Int! = 1
-  take: Int! = 10
 }
 
 input CompanyFiltersInput {
@@ -122,6 +131,8 @@ type Mutation {
   updateUserRole(input: UpdateUserRoleInput!): User!
   updateProfile(input: UpdateProfileInput!): User!
   updatePassword(input: UpdatePasswordInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  removeUser(id: String!): User!
   login(input: LoginInput!): AuthResponse!
   register(input: CreateUserInput!): AuthResponse!
   refreshToken(refreshToken: String!): AuthResponse!
@@ -158,6 +169,13 @@ input UpdateProfileInput {
 input UpdatePasswordInput {
   currentPassword: String!
   newPassword: String!
+}
+
+input UpdateUserInput {
+  userId: String!
+  name: String
+  email: String
+  role: Role
 }
 
 input LoginInput {
