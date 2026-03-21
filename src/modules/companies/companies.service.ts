@@ -35,21 +35,26 @@ export class CompaniesService {
 
   async findByOwnerPaginated(
     ownerId: string,
-    pagination: PaginationInput
+    pagination: PaginationInput,
+    filters?: CompanyFiltersInput
   ): Promise<PaginatedCompaniesResponse> {
     const { page, take } = pagination
     const skip = (page - 1) * take
 
+    const where: Record<string, unknown> = { owner_id: ownerId }
+
+    if (filters?.search) {
+      where.OR = [{ name: { contains: filters.search, mode: 'insensitive' } }]
+    }
+
     const [companies, total] = await Promise.all([
       this.prismaService.company.findMany({
-        where: { owner_id: ownerId },
+        where,
         orderBy: { created_at: 'desc' },
         skip,
         take
       }),
-      this.prismaService.company.count({
-        where: { owner_id: ownerId }
-      })
+      this.prismaService.company.count({ where })
     ])
 
     const total_pages = Math.ceil(total / take)
@@ -80,6 +85,42 @@ export class CompaniesService {
     })
 
     return companies
+  }
+
+  async findAllPaginated(
+    pagination: PaginationInput,
+    filters?: CompanyFiltersInput
+  ): Promise<PaginatedCompaniesResponse> {
+    const { page, take } = pagination
+    const skip = (page - 1) * take
+
+    const where: Record<string, unknown> = {}
+
+    if (filters?.search) {
+      where.OR = [{ name: { contains: filters.search, mode: 'insensitive' } }]
+    }
+
+    const [companies, total] = await Promise.all([
+      this.prismaService.company.findMany({
+        where,
+        orderBy: { created_at: 'desc' },
+        skip,
+        take
+      }),
+      this.prismaService.company.count({ where })
+    ])
+
+    const total_pages = Math.ceil(total / take)
+
+    return {
+      companies,
+      info: {
+        total,
+        page,
+        take,
+        total_pages
+      }
+    }
   }
 
   async count(filters?: CompanyFiltersInput) {

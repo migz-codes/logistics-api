@@ -46,13 +46,14 @@ export class CompaniesResolver {
   @Query(() => PaginatedCompaniesResponse, { name: 'getMyCompanies', nullable: true })
   async getMyCompanies(
     @Context('req') req: IAuthenticatedRequest,
-    @Args('pagination', { nullable: true }) pagination?: PaginationInput
+    @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    @Args('filters', { nullable: true }) filters?: CompanyFiltersInput
   ) {
     const user_id = req.user.id
     const paginationParams = pagination ?? { page: 1, take: 10 }
 
     try {
-      return await this.companiesService.findByOwnerPaginated(user_id, paginationParams)
+      return await this.companiesService.findByOwnerPaginated(user_id, paginationParams, filters)
     } catch (error) {
       throwGraphQLError({
         message: 'Failed to fetch companies',
@@ -64,10 +65,15 @@ export class CompaniesResolver {
 
   @UseGuards(AuthGuard, RolesGuard)
   @Roles('ADMIN')
-  @Query(() => [Company], { name: 'companies', nullable: true })
-  async findAll(@Args('filters', { nullable: true }) filters?: CompanyFiltersInput) {
+  @Query(() => PaginatedCompaniesResponse, { name: 'companies', nullable: true })
+  async findAll(
+    @Args('pagination', { nullable: true }) pagination?: PaginationInput,
+    @Args('filters', { nullable: true }) filters?: CompanyFiltersInput
+  ) {
+    const paginationParams = pagination ?? { page: 1, take: 10 }
+
     try {
-      return await this.companiesService.findAll(filters)
+      return await this.companiesService.findAllPaginated(paginationParams, filters)
     } catch (error) {
       throwGraphQLError({
         error,

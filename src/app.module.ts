@@ -18,10 +18,7 @@ import { WarehousesModule } from './modules/warehouses/warehouses.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env'
-    }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     UserModule,
     AuthModule,
     RolesModule,
